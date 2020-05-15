@@ -2,9 +2,9 @@ const path = require("path");
 
 module.exports = {
   mode: "production",
-  entry: "./src/scripts/scripts.js",
+  entry: "./src/scripts/app.js",
   output: {
     path: path.resolve(__dirname, "dist/js"),
-    filename: "scripts.js"
+    filename: "app.js"
   }
 };

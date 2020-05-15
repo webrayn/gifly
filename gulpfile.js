@@ -44,6 +44,7 @@ function style() {
     .src("./src/styles/styles.scss")
     .pipe(sass())
     .pipe(postcss([autoprefixer("last 2 versions"), cssnano()]))
+    .on("error", swallowError)
     .pipe(gulp.dest("./dist/css"))
     .pipe(browserSync.stream());
 }
@@ -51,11 +52,12 @@ function style() {
 // handle js
 function scripts() {
   return gulp
-    .src("./src/scripts/scripts.js")
+    .src("./src/scripts/app.js")
     .pipe(
       webpackStream(webpackConfig),
       webpack
     )
+    .on("error", swallowError)
     .pipe(gulp.dest("./dist/js"));
 }
 
@@ -64,6 +66,7 @@ function images() {
   return gulp
     .src("./src/images/**/*")
     .pipe(imagemin())
+    .on("error", swallowError)
     .pipe(gulp.dest("./dist/images"));
 }
 
@@ -73,6 +76,11 @@ function watchFiles() {
   gulp.watch("./src/styles/**/*.scss", style);
   gulp.watch("./src/scripts/**/*.js", gulp.series(scripts, reload));
   gulp.watch("./src/images/**/*", gulp.series(images, reload));
+}
+
+function swallowError(err) {
+  console.log(err.toString());
+  this.emit("end");
 }
 
 const watch = gulp.parallel(watchFiles, browserSyncInit);

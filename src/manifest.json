@@ -1,0 +1,20 @@
+{
+  "name": "Power Tabber",
+  "version": "1.0",
+  "description": "Tab management made easy",
+  "background": {
+    "scripts": [
+      "./js/background.js"
+    ],
+    "persistent": false
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "browser_action": {
+    "default_icon": "images/get_started16.png",
+    "default_popup": "index.html",
+    "default_title": "Power Tabber popup"
+  },
+  "manifest_version": 2
+}

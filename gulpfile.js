@@ -52,13 +52,18 @@ function style() {
 // handle js
 function scripts() {
   return gulp
-    .src("./src/scripts/app.js")
+    .src("./src/scripts/*.js")
     .pipe(
       webpackStream(webpackConfig),
       webpack
     )
     .on("error", swallowError)
     .pipe(gulp.dest("./dist/js"));
+}
+
+// move manifest.json to dist directory
+function manifest() {
+  return gulp.src("./src/manifest.json").pipe(gulp.dest("./dist"));
 }
 
 // optimize images
@@ -75,6 +80,7 @@ function watchFiles() {
   gulp.watch("./src/*.html", gulp.series(html, reload));
   gulp.watch("./src/styles/**/*.scss", style);
   gulp.watch("./src/scripts/**/*.js", gulp.series(scripts, reload));
+  gulp.watch("./src/manifest.json", gulp.series(manifest, reload));
   gulp.watch("./src/images/**/*", gulp.series(images, reload));
 }
 
@@ -84,7 +90,10 @@ function swallowError(err) {
 }
 
 const watch = gulp.parallel(watchFiles, browserSyncInit);
-const build = gulp.series(clean, gulp.parallel(html, style, scripts, images));
+const build = gulp.series(
+  clean,
+  gulp.parallel(html, style, scripts, manifest, images)
+);
 
 exports.watch = watch;
 exports.build = build;

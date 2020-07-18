@@ -1,11 +1,16 @@
 console.log("Background is running");
 
-chrome.runtime.onMessage.addListener(receiver);
+// chrome.runtime.onMessage.addListener(receiver);
 
-function receiver(request, sender, sendResponse) {
-  console.log(request);
-  window.word = request.text.trim();
-}
+// function receiver(request, sender, sendResponse) {
+//   console.log(request);
+//   window.word = request.text.trim();
+// }
+
+// chrome.browserAction.onClicked.addListener(handleClick);
+// function handleClick() {
+//   chrome.browserAction.openPopup();
+// }
 
 // // gets the tabs
 // chrome.tabs.query({ 'active': true }, function (tabs) {

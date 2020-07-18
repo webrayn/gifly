@@ -1,0 +1,143 @@
+.tab-list-item {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  height: var(--block-height);
+  background: white;
+  margin: var(--lesser-padding) 0;
+  padding: var(--greater-padding);
+  border-radius: var(--lesser-padding);
+  width: 100%;
+  --duplicate-indicator-color: none;
+  --y-pos: null;
+  transform: translateY(0);
+  transition: background-color 140ms ease-in-out, transform 140ms ease-in-out, opacity 140ms ease-out;
+  // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
+  // transition: background-color 150ms ease-in-out;
+  touch-action: none;
+
+  &--active {
+    background: yellow;
+  }
+
+  &:hover {
+    background: #DDD;
+    // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
+    transition: background-color 140ms ease-in-out, transform 140ms ease-in-out, opacity 140ms ease-out;
+  }
+
+  &__tab-button {
+    top: 2px;
+    left: 2px;
+    position: absolute;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    border-radius: calc(var(--lesser-padding) - 2px);
+    background: transparent;
+    // opacity: 0.1;
+    touch-action: none;
+  }
+
+  &__checkbox {
+    background: red;
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    margin-right: var(--greater-padding);
+  }
+
+  & img {
+    border: none;
+    width: 20px;
+    height: 20px;
+  }
+
+  &__title {
+    position: relative;
+    margin: 0 var(--greater-padding);
+    flex: 1 0 0;
+  }
+
+  &__delete-button {
+    z-index: 1;
+    width: 1rem;
+    height: 1rem;
+    background: blue;
+  }
+
+  &--draggable {
+    // position: absolute;
+    // width: calc(100% - var(--lesser-padding));
+    z-index: 1000;
+    cursor: grabbing;
+    transform: translateY(var(--y-pos));
+    // transform: translateY(100%);
+    transition: transform 30ms ease-in-out;
+    // transition: none;
+    // pointer-events: none;
+
+    &:hover {
+      transition: transform 30ms ease-in-out;
+    }
+
+    & .tab-list-item__tab-button {
+      cursor: grabbing;
+    }
+
+    // & ~ li {
+    //   transform: translateY(calc(100% + var(--lesser-padding)));
+    //   transition: none;
+    // }
+  }
+
+  &--move-below {
+    transform: translateY(calc(100% + var(--lesser-padding)));
+    transition: transform 140ms ease-out;
+  }
+
+  &--move-above {
+    transform: translateY(calc(-100% - var(--lesser-padding)));
+    transition: transform 140ms ease-out;
+  }
+
+  &--duplicate {
+
+    &::before {
+      content: "";
+      // position: absolute;
+      position: relative;
+      // left: 0;
+      // height: 100%;
+      // height: 10px;
+      margin-right: var(--greater-padding);
+      width: 0.3rem;
+      border-radius: 0.1rem;
+      background: var(--duplicate-indicator-color);
+    }
+
+    // & p {
+    //   padding-left: var(--greater-padding);
+    // }
+    // & p::before {
+    //   content: "";
+    //   position: absolute;
+    //   left: 0;
+    //   height: 100%;
+    //   width: 0.3rem;
+    //   border-radius: 0.1rem;
+    //   background: var(--duplicate-indicator-color);
+    // }
+
+  }
+
+  &--deleted {
+    opacity: 0;
+    margin-bottom: calc(var(--block-height) * -1);
+    transition: opacity 140ms ease-out;
+
+    & ~ li {
+      transform: translateY(var(--block-height));
+      transition: none;
+    }
+  }
+}

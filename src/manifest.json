@@ -9,7 +9,9 @@
     "persistent": false
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage",
+    "chrome://favicon/"
   ],
   "browser_action": {
     "default_icon": "images/get_started16.png",

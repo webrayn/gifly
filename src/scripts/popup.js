@@ -100,7 +100,8 @@ const state = {
     tabsListItem.classList.add("tab-list-item--deleted");
     setTimeout(() => {
       tabsListItem.remove();
-    }, 140);
+      util.adjustBodyPadding();
+    }, 1400);
     // if there are no more tabs with this title, tab object can be removed
     if (this.tabURLs[tabUrl].ids.length == 0) {
       delete this.tabURLs[tabUrl];
@@ -208,9 +209,14 @@ document.addEventListener("mousedown", e => {
     // moves tab up or down
     const moveAt = function (pageY) {
       // tabComponent.style.top = pageY - shiftY - 6 + "px";
+      // tabComponent.style.setProperty(
+      //   "--y-pos",
+      //   pageY - tabComponent.offsetTop - shiftY + "px"
+      // );
+      console.log(tabComponent.offsetTop);
       tabComponent.style.setProperty(
         "--y-pos",
-        pageY - tabComponent.offsetTop - shiftY + "px"
+        pageY - tabComponent.offsetTop - shiftY - 46 + "px"
       );
     };
 

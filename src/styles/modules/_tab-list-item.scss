@@ -4,6 +4,7 @@
   align-items: stretch;
   height: var(--block-height);
   background: white;
+  // margin: 0 0 var(--lesser-padding) 0;
   margin: var(--lesser-padding) 0;
   padding: var(--greater-padding);
   border-radius: var(--lesser-padding);
@@ -11,13 +12,16 @@
   --duplicate-indicator-color: none;
   --y-pos: null;
   transform: translateY(0);
-  transition: background-color 140ms ease-in-out, transform 140ms ease-in-out, opacity 140ms ease-out;
+  transition: background-color 140ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
   // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
   // transition: background-color 150ms ease-in-out;
   touch-action: none;
 
   &--active {
     background: yellow;
+    // add a colored circle to represent active tab
+    // margin-left: var(--block-height);
+    // margin-left: calc(var(--lesser-padding) * -1);
   }
 
   &:hover {
@@ -27,12 +31,16 @@
   }
 
   &__tab-button {
-    top: 2px;
-    left: 2px;
+    // top: 2px;
+    top: 0;
+    // left: 2px;
+    left: 0;
     position: absolute;
-    width: calc(100% - 4px);
-    height: calc(100% - 4px);
-    border-radius: calc(var(--lesser-padding) - 2px);
+    // width: calc(100% - 4px);
+    width: 100%;
+    // height: calc(100% - 4px);
+    height: 100%;
+    border-radius: var(--lesser-padding);
     background: transparent;
     // opacity: 0.1;
     touch-action: none;
@@ -46,23 +54,53 @@
     margin-right: var(--greater-padding);
   }
 
-  & img {
+  &__favicon {
     border: none;
     width: 20px;
     height: 20px;
+    margin-right: var(--greater-padding);
   }
 
   &__title {
     position: relative;
-    margin: 0 var(--greater-padding);
+    margin: 0 var(--greater-padding) 0 0;
     flex: 1 0 0;
   }
 
   &__delete-button {
+    position: relative;
     z-index: 1;
     width: 1rem;
     height: 1rem;
-    background: blue;
+    border-radius: var(--lesser-padding);
+    background: transparent;
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      top: -0.1rem;
+      left: -0.1rem;
+      border-radius: var(--lesser-padding);
+      z-index: -1;
+      pointer-events: none;
+      transition: background-color 140ms ease-in-out;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.1rem lime;
+    }
+
+    &:hover {
+      &::before {
+        background: #bfbfbf;
+      }
+    }
+
+    & img {
+      pointer-events: none;
+    }
   }
 
   &--draggable {
@@ -133,7 +171,7 @@
   &--deleted {
     opacity: 0;
     margin-bottom: calc(var(--block-height) * -1);
-    transition: opacity 140ms ease-out;
+    transition: opacity 1400ms ease-out;
 
     & ~ li {
       transform: translateY(var(--block-height));

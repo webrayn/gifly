@@ -16,17 +16,17 @@ function createTabComponent(tab) {
   checkbox.setAttribute("type", "checkbox");
   checkbox.classList.add("tab-list-item__checkbox");
 
-  // create duplicate indicator
-  // const duplicateIndicator = document.createElement("div");
-  // duplicateIndicator.classList.add("tab-list-item__duplicate-indicator");
-
   // create favIcon
   const favIcon = document.createElement("img");
-  if (tab.favIconUrl != "") {
+  favIcon.classList.add("tab-list-item__favicon");
+  if (tab.favIconUrl != "" && tab.favIconUrl != undefined) {
     favIcon.src = tab.favIconUrl;
   } else {
     favIcon.src = "chrome://favicon/" + tab.url;
   }
+
+  const domainName = tab.url.match(/(?<=:\/\/).+?(?=\/|$)/);
+  favIcon.alt = domainName;
 
   // create tab Title
   const p = document.createElement("p");
@@ -41,6 +41,9 @@ function createTabComponent(tab) {
   // create delete button
   const deleteButton = document.createElement("button");
   deleteButton.classList.add("tab-list-item__delete-button");
+  const deleteIcon = document.createElement("img");
+  deleteIcon.src = "images/delete-icon@20x20.svg";
+  deleteButton.appendChild(deleteIcon);
 
   // create tab button
   const tabButton = document.createElement("button");

@@ -2,13 +2,17 @@
 
 function adjustBodyPadding() {
   // if html has a vertical scrollbar, padding-right should be adjusted on the body to avoid unsightly gap
-  if (
-    document.documentElement.scrollHeight >
-    document.documentElement.clientHeight
-  ) {
-    document.body.classList.add("scroll");
+  const tabList = document.getElementById("tab-list");
+  // console.log(
+  //   `list scroll height: ${tabList.scrollHeight}, list clientHeight: ${
+  //   tabList.clientHeight
+  //   }`
+  // );
+  if (tabList.scrollHeight > 554) {
+    tabList.classList.add("tab-list--scroll");
   } else {
-    document.body.classList.remove("scroll");
+    console.log("removing scroll class");
+    tabList.classList.remove("tab-list--scroll");
   }
 }
 

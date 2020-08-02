@@ -1,9 +1,23 @@
 .filter {
-  width: 100%;
+  top: 0;
+  font-size: 1rem;
+  // background: #EEE;
+  // background: #445;
+  // background: #667;
+  
+  // background: #5e606e;
+  background: #636374;
+  color: white;
+  padding: var(--greater-padding);
+  padding-left: var(--block-height);
+  // width: 100%;
+  // width: 61%;
+  flex: 1 0 0;
   height: var(--block-height);
   border: 0;
-  margin-top: var(--lesser-padding);
-  margin-top: 30px;
-  margin-bottom: var(--block-height);
+  // margin-right: var(--lesser-padding);
+  // margin-top: var(--lesser-padding);
+  // margin-top: 30px;
+  // margin-bottom: var(--block-height);
   border-radius: var(--lesser-padding);
 }

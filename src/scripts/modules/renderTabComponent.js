@@ -4,7 +4,7 @@
 const createTabComponent = require("./createTabComponent");
 
 function renderTabComponent(tab) {
-  const tabsList = document.getElementById("tabs-list");
+  const tabsList = document.getElementById("tab-list");
   const tabComponent = createTabComponent.call(this, tab);
   tabsList.appendChild(tabComponent);
   adjustBodyPadding();
@@ -12,13 +12,11 @@ function renderTabComponent(tab) {
 
 function adjustBodyPadding() {
   // if html has a vertical scrollbar, padding-right should be adjusted on the body to avoid unsightly gap
-  if (
-    document.documentElement.scrollHeight >
-    document.documentElement.clientHeight
-  ) {
-    document.body.classList.add("scroll");
+  const tabList = document.getElementById("tab-list");
+  if (tabList.scrollHeight > tabList.clientHeight) {
+    tabList.classList.add("tab-list--scroll");
   } else {
-    document.body.classList.remove("scroll");
+    tabList.classList.remove("tab-list--scroll");
   }
 }
 

@@ -40,7 +40,7 @@ const util = require("./modules/util");
 const state = {
   // make sure to save thes in localStorage so they persist between tabs
   hue: 0,
-  lightness: 70,
+  lightness: 60,
   tabLastMovedDown: null,
   tabs: {
     // "tab-12": {
@@ -96,11 +96,16 @@ const state = {
     this.tabURLs[tabUrl].ids = this.tabURLs[tabUrl].ids.filter(
       tabId => tabId != id
     );
+    const tabsList = document.getElementById("tab-list");
     const tabsListItem = document.getElementById(id);
+
     tabsListItem.classList.add("tab-list-item--deleted");
+    tabsList.classList.add("tab-list--deleting");
     setTimeout(() => {
+      // tabsList.classList.add("tab-list--deleting");
       tabsListItem.remove();
       util.adjustBodyPadding();
+      setTimeout(() => tabsList.classList.remove("tab-list--deleting"), 1400);
     }, 1400);
     // if there are no more tabs with this title, tab object can be removed
     if (this.tabURLs[tabUrl].ids.length == 0) {
@@ -123,7 +128,7 @@ chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, function (
   // const tabsList = document.getElementById("tabs-list");
   // tabs.forEach(tab => state.addTab(tab.url));
   tabs.forEach(tab => state.addTab(tab));
-
+  util.adjustBodyPadding();
   // tabs.forEach(tab => {
   //   state.addTab(tab);
   //   util.adjustBodyPadding();

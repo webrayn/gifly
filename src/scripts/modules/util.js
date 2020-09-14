@@ -18,10 +18,9 @@ function adjustBodyPadding() {
 
 function addNewColor(URL) {
   this.tabURLs[URL].color = `hsl(${this.hue}, 100%, ${this.lightness}%)`;
-  // change hue or lightness to create a new color for the next duplicate
   if (this.hue <= 280) {
     this.hue += 40;
-  } else if (this.lightness == 70) {
+  } else if (this.lightness == 60) {
     this.hue = 0;
     this.lightness = 40;
   }

@@ -2,7 +2,7 @@
   position: absolute;
   top: calc(var(--block-height) + var(--lesser-padding));
   width: 100%;
-  // height: 100%;
+  // height: auto;
   list-style: none;
   // flex: 1 1 0;
   max-height: 554px;
@@ -18,4 +18,8 @@
   &--scroll {
     padding-right: 0;
   }
+
+  // &--deleting {
+  //   padding-bottom: var(--block-height);
+  // }
 }

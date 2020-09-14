@@ -11,23 +11,67 @@
   width: 100%;
   --duplicate-indicator-color: none;
   --y-pos: null;
+  --active-indcator-space: calc(var(--greater-padding) + var(--lesser-padding));
   transform: translateY(0);
-  transition: background-color 140ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
+  transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
   // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
   // transition: background-color 150ms ease-in-out;
   touch-action: none;
+  overflow: hidden;
 
   &--active {
-    background: yellow;
+    // background: yellow;
     // add a colored circle to represent active tab
     // margin-left: var(--block-height);
-    // margin-left: calc(var(--lesser-padding) * -1);
+    // padding-left: calc(var(--active-indcator-space) + var(--greater-padding));
+
+    & .tab-list-item__active-indicator {
+      // position: absolute;
+      // left: calc(var(--greater-padding) / 2);
+      // left: 0;
+      // top: 0;
+      // background: var(--color-one);
+      background: lime;
+      // border: 1px solid var(--color-one);
+      height: 100%;
+      width: 0.35rem;
+      border-radius: 0.1rem;
+      margin-right: var(--greater-padding);
+
+      // &::before {
+      //   content: "";
+      //   position: absolute;
+      //   left: calc(var(--lesser-padding) * -1);
+      //   // left: -var(--lesser-padding);
+      //   top: 0;
+      //   background: white;
+      //   border-radius: var(--lesser-padding);
+      //   height: var(--lesser-padding);
+      //   // border: 6px solid var(--color-one);
+      //   // width: var(--greater-padding);
+      //   width: var(--greater-padding);
+      // }
+  
+      // &::after {
+      //   content: "";
+      //   position: absolute;
+      //   left: var(--greater-padding);
+      //   // left: calc((1rem + var(--lesser-padding)) * -1);
+      //   top: 0;
+      //   background: white;
+      //   border-radius: var(--lesser-padding);
+      //   height: var(--block-height);
+      //   // width: var(--greater-padding);
+      //   width: var(--greater-padding);
+      // }
+    }
+
   }
 
   &:hover {
     background: #DDD;
     // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
-    transition: background-color 140ms ease-in-out, transform 140ms ease-in-out, opacity 140ms ease-out;
+    transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
   }
 
   &__tab-button {
@@ -140,42 +184,51 @@
 
   &--duplicate {
 
-    &::before {
-      content: "";
-      // position: absolute;
+    & .tab-list-item__duplicate-indicator {
       position: relative;
-      // left: 0;
-      // height: 100%;
-      // height: 10px;
       margin-right: var(--greater-padding);
-      width: 0.3rem;
+      width: 0.35rem;
+      height: 0.35rem;
       border-radius: 0.1rem;
       background: var(--duplicate-indicator-color);
+
+      &::after {
+        content: "";
+        position: absolute;
+        top: 0.65rem;
+        left: 0;
+        width: 0.35rem;
+        height: 0.35rem;
+        border-radius: 0.1rem;
+        background: var(--duplicate-indicator-color);
+      }
     }
-
-    // & p {
-    //   padding-left: var(--greater-padding);
-    // }
-    // & p::before {
-    //   content: "";
-    //   position: absolute;
-    //   left: 0;
-    //   height: 100%;
-    //   width: 0.3rem;
-    //   border-radius: 0.1rem;
-    //   background: var(--duplicate-indicator-color);
-    // }
-
   }
 
   &--deleted {
     opacity: 0;
-    margin-bottom: calc(var(--block-height) * -1);
+    // margin-bottom: calc(var(--block-height) * -1);
     transition: opacity 1400ms ease-out;
 
+    // & + li {
+    //   margin-top: calc(var(--block-height) * 1);
+    //   transition: none;
+    // }
+
     & ~ li {
-      transform: translateY(var(--block-height));
+      // transform: translateY(var(--block-height));
+      // transform: translateY(calc(var(--block-height) + var(--greater-padding)));
       transition: none;
+
+      // &:first-of-type {
+      //   margin-top: var(--block-height);
+      //   background: red;
+      // }
+
+      // &:last-of-type {
+      //   margin-bottom: var(--block-height);
+      //   background: red;
+      // }
     }
   }
 }

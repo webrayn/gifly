@@ -11,6 +11,14 @@ function createTabComponent(tab) {
     tabComponent.classList.add("tab-list-item--duplicate");
   }
 
+  // create active tab indicator
+  const activeIndicator = document.createElement("div");
+  activeIndicator.classList.add("tab-list-item__active-indicator");
+
+  // create duplicate indicator
+  const duplicateIndicator = document.createElement("div");
+  duplicateIndicator.classList.add("tab-list-item__duplicate-indicator");
+
   // create checkbox
   const checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
@@ -49,6 +57,8 @@ function createTabComponent(tab) {
   const tabButton = document.createElement("button");
   tabButton.classList.add("tab-list-item__tab-button");
 
+  tabComponent.appendChild(activeIndicator);
+  tabComponent.appendChild(duplicateIndicator);
   tabComponent.appendChild(checkbox);
   tabComponent.appendChild(favIcon);
   tabComponent.appendChild(p);

@@ -196,13 +196,18 @@ document.addEventListener("click", e => {
 document.addEventListener("mousedown", e => {
   if (e.target.classList.contains("tab-list-item__tab-button")) {
     const tabComponent = e.target.parentElement;
-    // those above can only move below when they dont have move-down class, and can only move above when they have move-down class
-    const tabComponentsAbove = [];
-    let previousSibling = tabComponent.previousSibling;
-    while (previousSibling != null && previousSibling.nodeType == 1) {
-      tabComponentsAbove.push(previousSibling);
-      previousSibling = previousSibling.previousSibling;
-    }
+    const listedTabs = [...document.getElementsByClassName("tab-list-item")];
+    const headerHeight = 46;
+    const tabComponentIndex = listedTabs.findIndex(
+      tab => tab.id === tabComponent.id
+    );
+
+    const tabPositions = listedTabs.map(tab => tab.offsetTop + headerHeight);
+    const originaltabComponentPosition = tabPositions[tabComponentIndex];
+    listedTabs
+      .filter((tab, index) => index != tabComponentIndex)
+      .forEach(tab => tab.classList.add("tab-list-item--move-below"));
+
     // get the position of the cursor within the tabComponent
     let shiftY = e.clientY - tabComponent.getBoundingClientRect().top;
 
@@ -213,12 +218,6 @@ document.addEventListener("mousedown", e => {
 
     // moves tab up or down
     const moveAt = function (pageY) {
-      // tabComponent.style.top = pageY - shiftY - 6 + "px";
-      // tabComponent.style.setProperty(
-      //   "--y-pos",
-      //   pageY - tabComponent.offsetTop - shiftY + "px"
-      // );
-      console.log(tabComponent.offsetTop);
       tabComponent.style.setProperty(
         "--y-pos",
         pageY - tabComponent.offsetTop - shiftY - 46 + "px"
@@ -227,37 +226,16 @@ document.addEventListener("mousedown", e => {
 
     const onMouseMove = function (event) {
       moveAt(event.pageY);
+      const currentTabTopPosition = tabComponent.getBoundingClientRect().top;
 
-      // let tabBelow = document
-      //   .elementsFromPoint(event.clientX, event.clientY)
-      //   .find(e => {
-      //     if (e.id !== tabComponent.id && e.tagName == "LI") {
-      //       return e;
-      //     }
-      //   });
+      tabPositions.slice(0, tabComponentIndex).forEach((position, index) => {
+        const difference = Math.max(position + 46 - currentTabTopPosition, 0);
 
-      // if (!tabBelow) return;
-
-      const tabComponentTop = tabComponent.getBoundingClientRect().top;
-
-      tabComponentsAbove.forEach(tab => {
-        const tabTop = tab.getBoundingClientRect().top;
-        if (tabComponentTop <= tabTop) {
-          tab.classList.add("tab-list-item--move-below");
-          state.tabLastMovedDown = tab;
-        } else if (tabTop > tab.offsetTop + tab.offsetHeight) {
-          tab.classList.remove("tab-list-item--move-below");
-        }
+        listedTabs[index].style.setProperty(
+          "--y-offset",
+          Math.min(difference, 46) + "px"
+        );
       });
-      // if (
-      //   tabBelow.getBoundingClientRect().top >=
-      //   tabComponent.getBoundingClientRect().top
-      // ) {
-      //   tabBelow.classList.add("tab-list-item--move-below");
-      // }
-
-      // let droppableBelow = elemBelow.closest(":not(div)");
-      // elemBelow.style.background = "green";
     };
 
     moveAt(e.pageY);
@@ -269,12 +247,12 @@ document.addEventListener("mousedown", e => {
       tabComponent.onmouseup = null;
       tabComponent.style.top = 0;
       tabComponent.classList.remove("tab-list-item--draggable");
-      const tabComponents = document.getElementsByClassName("tab-list-item");
-      [...tabComponents].forEach(c =>
-        c.classList.remove("tab-list-item--move-below")
-      );
-      const tabList = document.getElementById("tabs-list");
-      tabList.insertBefore(tabComponent, state.tabLastMovedDown);
+      // const tabComponents = document.getElementsByClassName("tab-list-item");
+      // [...tabComponents].forEach(c =>
+      //   c.classList.remove("tab-list-item--move-below")
+      // );
+      // const tabList = document.getElementById("tabs-list");
+      // tabList.insertBefore(tabComponent, state.tabLastMovedDown);
     };
   }
 });

@@ -11,8 +11,10 @@
   width: 100%;
   --duplicate-indicator-color: none;
   --y-pos: null;
+  --y-offset: 0;
   --active-indcator-space: calc(var(--greater-padding) + var(--lesser-padding));
-  transform: translateY(0);
+  // transform: translateY(0);
+  transform: translateY(var(--y-offset));
   transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
   // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
   // transition: background-color 150ms ease-in-out;
@@ -30,8 +32,8 @@
       // left: calc(var(--greater-padding) / 2);
       // left: 0;
       // top: 0;
-      // background: var(--color-one);
-      background: lime;
+      background: var(--color-one);
+      // background: lime;
       // border: 1px solid var(--color-one);
       height: 100%;
       width: 0.35rem;
@@ -173,12 +175,14 @@
   }
 
   &--move-below {
-    transform: translateY(calc(100% + var(--lesser-padding)));
+    // transform: translateY(calc(100% + var(--lesser-padding)));
+    // transition: transform 140ms ease-out;
+    transform: translateY(var(--y-offset));
     transition: transform 140ms ease-out;
   }
 
   &--move-above {
-    transform: translateY(calc(-100% - var(--lesser-padding)));
+    transform: translateY(var(--y-offset));
     transition: transform 140ms ease-out;
   }
 

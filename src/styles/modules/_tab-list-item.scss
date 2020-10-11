@@ -13,6 +13,8 @@
   --y-pos: null;
   --y-offset: 0;
   --active-indcator-space: calc(var(--greater-padding) + var(--lesser-padding));
+  --opacity: 1;
+  --scale: 1;
   // transform: translateY(0);
   transform: translateY(var(--y-offset));
   transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
@@ -157,11 +159,13 @@
     transform: translateY(var(--y-pos));
     // transform: translateY(100%);
     transition: transform 30ms ease-in-out;
+    // background: white;
     // transition: none;
     // pointer-events: none;
 
     &:hover {
       transition: transform 30ms ease-in-out;
+      background: white;
     }
 
     & .tab-list-item__tab-button {
@@ -174,10 +178,9 @@
     // }
   }
 
-  &--move-below {
-    // transform: translateY(calc(100% + var(--lesser-padding)));
-    // transition: transform 140ms ease-out;
-    transform: translateY(var(--y-offset));
+  &--move-below { 
+    opacity: var(--opacity);
+    transform: translateY(var(--y-offset)) scale(var(--scale));
     transition: transform 140ms ease-out;
   }
 

@@ -16,10 +16,9 @@
   --opacity: 1;
   --scale: 1;
   // transform: translateY(0);
-  transform: translateY(var(--y-offset));
-  transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
-  // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
-  // transition: background-color 150ms ease-in-out;
+  // transform: translateY(var(--y-offset));
+  // transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
+  transition: background-color 1400ms ease-in-out, transform 0ms, opacity 1400ms ease-out;
   touch-action: none;
   overflow: hidden;
 
@@ -178,15 +177,11 @@
     // }
   }
 
-  &--move-below { 
+  &--moving { 
     opacity: var(--opacity);
     transform: translateY(var(--y-offset)) scale(var(--scale));
-    transition: transform 140ms ease-out;
-  }
-
-  &--move-above {
-    transform: translateY(var(--y-offset));
-    transition: transform 140ms ease-out;
+    transition: transform 140ms ease-out, opacity 140ms ease-out;
+    // transition: none;
   }
 
   &--duplicate {
@@ -217,13 +212,13 @@
     // margin-bottom: calc(var(--block-height) * -1);
     transition: opacity 1400ms ease-out;
 
-    // & + li {
-    //   margin-top: calc(var(--block-height) * 1);
-    //   transition: none;
-    // }
+    & + li {
+      margin-top: calc(var(--block-height) * -1);
+      transition: none;
+    }
 
     & ~ li {
-      // transform: translateY(var(--block-height));
+      transform: translateY(var(--block-height));
       // transform: translateY(calc(var(--block-height) + var(--greater-padding)));
       transition: none;
 

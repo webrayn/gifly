@@ -203,11 +203,15 @@ document.addEventListener("mousedown", e => {
     );
 
     const tabPositions = listedTabs.map(tab => tab.offsetTop + headerHeight);
-    // const originaltabComponentPosition = tabPositions[tabComponentIndex];
+    const draggedTabOriginalPosition = tabPositions[tabComponentIndex];
+    const tabList = document.getElementById("tab-list");
+    const tabListBottom = tabList.offsetTop + tabList.offsetHeight;
+    const maxTabOffsetAbove = (draggedTabOriginalPosition - 52) * -1;
+    const maxTabOffsetBelow = tabListBottom - draggedTabOriginalPosition - 46;
 
     listedTabs
       .filter((tab, index) => index != tabComponentIndex)
-      .forEach(tab => tab.classList.add("tab-list-item--move-below"));
+      .forEach(tab => tab.classList.add("tab-list-item--moving"));
 
     // get the position of the cursor within the tabComponent
     let shiftY = e.clientY - tabComponent.getBoundingClientRect().top;
@@ -219,10 +223,13 @@ document.addEventListener("mousedown", e => {
 
     // moves tab up or down
     const moveAt = function (pageY) {
-      tabComponent.style.setProperty(
-        "--y-pos",
-        pageY - tabComponent.offsetTop - shiftY - 46 + "px"
-      );
+      let yOffset = pageY - tabComponent.offsetTop - shiftY - headerHeight;
+      if (yOffset < maxTabOffsetAbove) {
+        yOffset = maxTabOffsetAbove;
+      } else if (yOffset > maxTabOffsetBelow) {
+        yOffset = maxTabOffsetBelow;
+      }
+      tabComponent.style.setProperty("--y-pos", yOffset + "px");
     };
 
     const onMouseMove = function (event) {
@@ -277,13 +284,14 @@ document.addEventListener("mousedown", e => {
     document.onmouseup = function () {
       document.removeEventListener("mousemove", onMouseMove);
       tabComponent.onmouseup = null;
-      tabComponent.style.top = 0;
+      // tabComponent.style.top = 0;
       tabComponent.classList.remove("tab-list-item--draggable");
       const currentTabTopPosition = tabComponent.getBoundingClientRect().top;
       const tabList = document.getElementById("tab-list");
       listedTabs.forEach((tab, index) => {
-        tab.classList.remove("tab-list-item--move-below");
         tab.style.setProperty("--y-offset", 0);
+        // setTimeout(() => tab.classList.remove("tab-list-item--moving"), 140);
+        tab.classList.remove("tab-list-item--moving");
         // insert tab in new position
         if (
           tabPositions[index] + 23 > currentTabTopPosition &&

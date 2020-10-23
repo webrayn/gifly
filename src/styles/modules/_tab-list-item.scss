@@ -10,7 +10,7 @@
   border-radius: var(--lesser-padding);
   width: 100%;
   --duplicate-indicator-color: none;
-  --y-pos: null;
+  // --y-pos: null;
   --y-offset: 0;
   --active-indcator-space: calc(var(--greater-padding) + var(--lesser-padding));
   --opacity: 1;
@@ -151,16 +151,10 @@
   }
 
   &--draggable {
-    // position: absolute;
-    // width: calc(100% - var(--lesser-padding));
-    z-index: 1000;
+    // z-index: 1000;
     cursor: grabbing;
-    transform: translateY(var(--y-pos));
-    // transform: translateY(100%);
+    transform: translateY(var(--y-offset));
     transition: transform 30ms ease-in-out;
-    // background: white;
-    // transition: none;
-    // pointer-events: none;
 
     &:hover {
       transition: transform 30ms ease-in-out;
@@ -180,8 +174,9 @@
   &--moving { 
     opacity: var(--opacity);
     transform: translateY(var(--y-offset)) scale(var(--scale));
-    transition: transform 140ms ease-out, opacity 140ms ease-out;
+    transition: transform 140ms ease-in-out, opacity 140ms ease-in-out;
     // transition: none;
+    z-index: -1000;
   }
 
   &--duplicate {

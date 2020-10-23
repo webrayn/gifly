@@ -189,26 +189,140 @@ document.addEventListener("pointerdown", e => {
   if (e.target.classList.contains("tab-list-item__tab-button")) {
     const tabList = document.getElementById("tab-list");
     const tab = e.target.parentElement;
+    const margin = 6;
+    const tabHeight = 40;
     const shiftY = e.clientY - tab.getBoundingClientRect().top;
+    const tabListPosition = tabList.offsetTop;
+    const listedTabs = [...document.getElementsByClassName("tab-list-item")];
+    const tabIndex = listedTabs.findIndex(t => t.id === tab.id);
+    const tabsAbove = listedTabs.slice(0, tabIndex);
+    const tabsBelow = listedTabs.slice(tabIndex + 1);
+    // const originalTabPositions = listedTabs.map(t => {
+    //   return {
+    //     top: t.offsetTop + tabListPosition,
+    //     bottom: t.offsetTop + t.offsetHeight + tabListPosition
+    //   };
+    // });
+    const originalTabPositions = listedTabs.reduce((a, t) => {
+      a[t.id] = t.offsetTop + tabListPosition;
+      return a;
+    }, {});
+    listedTabs
+      .filter(t => t.id != tab.id)
+      .forEach(t => t.classList.add("tab-list-item--moving"));
+
     tab.classList.add("tab-list-item--draggable");
-    const headerHeight = 46;
     tab.setPointerCapture(e.pointerId);
+
     tab.onpointermove = function (event) {
-      let yOffset =
-        event.pageY + tabList.scrollTop - tab.offsetTop - shiftY - headerHeight;
-      // if (yOffset < maxTabOffsetAbove) {
-      //   yOffset = maxTabOffsetAbove;
-      // } else if (yOffset > maxTabOffsetBelow) {
-      //   yOffset = maxTabOffsetBelow;
-      // }
-      tab.style.setProperty("--y-pos", yOffset + "px");
+      const yOffset =
+        event.pageY +
+        tabList.scrollTop -
+        tab.offsetTop -
+        shiftY -
+        tabListPosition;
+      tab.style.setProperty("--y-offset", yOffset + "px");
+
+      // get tab's current position
+      const tabClientRect = tab.getBoundingClientRect();
+      const currentTabTopPosition = tabClientRect.top;
+
+      tabsAbove.forEach(tab => {
+        const totalDifference =
+          originalTabPositions[tab.id] - currentTabTopPosition;
+        // get the difference between the bottom of todo and the top of draggable todo.
+        const difference = totalDifference + tabHeight;
+        // calculate tab offset (should be min of 0, max of 46)
+        const offset = Math.max(
+          Math.min(difference * 1.3, tabHeight + margin),
+          0
+        );
+
+        tab.style.setProperty("--y-offset", offset + "px");
+        tab.style.setProperty(
+          "--opacity",
+          Math.max(Math.abs((offset % 46) - 23) / 23, 0.62)
+        );
+        tab.style.setProperty(
+          "--scale",
+          Math.max(Math.abs((offset % 46) - 23) / 23, 0.98)
+        );
+      });
+
+      tabsBelow.forEach(tab => {
+        const totalDifference =
+          originalTabPositions[tab.id] - currentTabTopPosition;
+        const difference = totalDifference - tabHeight;
+        const offset = Math.min(
+          Math.max(difference * 1.3, (tabHeight + margin) * -1),
+          0
+        );
+
+        tab.style.setProperty("--y-offset", offset + "px");
+        tab.style.setProperty(
+          "--opacity",
+          Math.max(Math.abs((offset % 46) + 23) / 23, 0.62)
+        );
+        tab.style.setProperty(
+          "--scale",
+          Math.max(Math.abs((offset % 46) + 23) / 23, 0.98)
+        );
+      });
+
+      // listedTabs.forEach((tab, index) => {
+      //   const totalDifference =
+      //     originalTabPositions[index].top - currentTabTopPosition;
+
+      //   // if tab is above current tab
+      //   if (index < tabIndex) {
+      //     // get the difference between the bottom of todo and the top of draggable todo.
+      //     const difference = totalDifference + tabHeight;
+      //     // calculate tab offset (should be min of 0, max of 46)
+      //     const offset = Math.max(
+      //       Math.min(difference * 1.3, tabHeight + margin),
+      //       0
+      //     );
+
+      //     tab.style.setProperty("--y-offset", offset + "px");
+      //     tab.style.setProperty(
+      //       "--opacity",
+      //       Math.max(Math.abs((offset % 46) - 23) / 23, 0.62)
+      //     );
+      //     tab.style.setProperty(
+      //       "--scale",
+      //       Math.max(Math.abs((offset % 46) - 23) / 23, 0.98)
+      //     );
+      //   } else if (index > tabIndex) {
+      //     const difference = totalDifference - tabHeight;
+      //     const offset = Math.min(
+      //       Math.max(difference * 1.3, (tabHeight + margin) * -1),
+      //       0
+      //     );
+
+      //     tab.style.setProperty("--y-offset", offset + "px");
+      //     tab.style.setProperty(
+      //       "--opacity",
+      //       Math.max(Math.abs((offset % 46) + 23) / 23, 0.62)
+      //     );
+      //     tab.style.setProperty(
+      //       "--scale",
+      //       Math.max(Math.abs((offset % 46) + 23) / 23, 0.98)
+      //     );
+      //   }
+      // });
     };
 
     document.addEventListener(
       "pointerup",
       () => {
         tab.onpointermove = null;
+        tab.style.setProperty("--y-offset", 0);
         tab.classList.remove("tab-list-item--draggable");
+        setTimeout(() => {
+          listedTabs.forEach(tab => {
+            tab.classList.remove("tab-list-item--moving");
+          });
+        }, 1400);
       },
       { once: true }
     );

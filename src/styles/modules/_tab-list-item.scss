@@ -173,6 +173,7 @@
 
   &--moving { 
     opacity: var(--opacity);
+    background: #DDD;
     transform: translateY(var(--y-offset)) scale(var(--scale));
     transition: transform 140ms ease-in-out, opacity 140ms ease-in-out;
     // transition: none;

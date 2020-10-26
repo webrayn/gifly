@@ -151,43 +151,12 @@ document.addEventListener("click", e => {
   }
 });
 
-// document.onload = () => {
-//   alert("loaded");
-//   const tabComponent = document.getElementById("tab-15");
-//   // tabComponent.classList.add("tab-list-item--draggable");
-//   tabComponent.onpointerdown = function (event) {
-//     tabComponent.setPointerCapture(event.pointerId);
-//   };
-//   tabComponent.onpointermove = function (event) {
-//     let newTop = event.clientY - tabComponent.getBoundingClientRect().top;
-//     tabComponent.style.top = newTop + "px";
-//   };
-// };
-
-// document.addEventListener("pointerdown", e => {
-//   if (e.target.classList.contains("tab-list-item__tab-button")) {
-//     const tabComponent = e.target.parentElement;
-//     tabComponent.classList.add("tab-list-item--draggable");
-//     tabComponent.onpointerdown = function (event) {
-//       tabComponent.setPointerCapture(event.pointerId);
-//     };
-//     tabComponent.onpointermove = function (event) {
-//       let newTop = event.clientY - tabComponent.getBoundingClientRect().top;
-//       tabComponent.style.top = newTop + "px";
-//     };
-//     // tabComponent.setPointerCapture(e.pointerId);
-//     // tabComponent.style.setProperty("--y-position", "30%");
-//     // const tabComponentRect = tabComponent.getBoundingClientRect();
-//     // alert(tabComponentRect.top);
-//     // tabComponent.classList.add("tab-list-item--draggable");
-//   }
-// });
-
-// overlay.style.background = "green";
-
 document.addEventListener("pointerdown", e => {
   if (e.target.classList.contains("tab-list-item__tab-button")) {
     const tabList = document.getElementById("tab-list");
+    const tabListBottom = tabList.offsetTop + tabList.offsetHeight;
+    // this value will have to change if user drags todo far enough below or above
+    let tabListScrollTop = tabList.scrollTop;
     const tab = e.target.parentElement;
     const margin = 6;
     const tabHeight = 40;
@@ -197,16 +166,21 @@ document.addEventListener("pointerdown", e => {
     const tabIndex = listedTabs.findIndex(t => t.id === tab.id);
     const tabsAbove = listedTabs.slice(0, tabIndex);
     const tabsBelow = listedTabs.slice(tabIndex + 1);
-    // const originalTabPositions = listedTabs.map(t => {
-    //   return {
-    //     top: t.offsetTop + tabListPosition,
-    //     bottom: t.offsetTop + t.offsetHeight + tabListPosition
-    //   };
-    // });
     const originalTabPositions = listedTabs.reduce((a, t) => {
       a[t.id] = t.offsetTop + tabListPosition;
       return a;
     }, {});
+    let maxTabOffsetAbove =
+      (originalTabPositions[tab.id] -
+        tabListPosition -
+        margin -
+        tabListScrollTop) *
+      -1;
+    let maxTabOffsetBelow =
+      tabListBottom -
+      originalTabPositions[tab.id] -
+      tabListPosition +
+      tabListScrollTop;
     listedTabs
       .filter(t => t.id != tab.id)
       .forEach(t => t.classList.add("tab-list-item--moving"));
@@ -215,17 +189,16 @@ document.addEventListener("pointerdown", e => {
     tab.setPointerCapture(e.pointerId);
 
     tab.onpointermove = function (event) {
-      const yOffset =
-        event.pageY +
-        tabList.scrollTop -
-        tab.offsetTop -
-        shiftY -
-        tabListPosition;
+      const currentTabTopPosition = Math.max(
+        Math.min(
+          event.pageY - shiftY + tabListScrollTop,
+          originalTabPositions[tab.id] + maxTabOffsetBelow
+        ),
+        originalTabPositions[tab.id] + maxTabOffsetAbove
+      );
+      const yOffset = currentTabTopPosition - originalTabPositions[tab.id];
+      // change dragged tab's position
       tab.style.setProperty("--y-offset", yOffset + "px");
-
-      // get tab's current position
-      const tabClientRect = tab.getBoundingClientRect();
-      const currentTabTopPosition = tabClientRect.top;
 
       tabsAbove.forEach(tab => {
         const totalDifference =
@@ -268,48 +241,6 @@ document.addEventListener("pointerdown", e => {
           Math.max(Math.abs((offset % 46) + 23) / 23, 0.98)
         );
       });
-
-      // listedTabs.forEach((tab, index) => {
-      //   const totalDifference =
-      //     originalTabPositions[index].top - currentTabTopPosition;
-
-      //   // if tab is above current tab
-      //   if (index < tabIndex) {
-      //     // get the difference between the bottom of todo and the top of draggable todo.
-      //     const difference = totalDifference + tabHeight;
-      //     // calculate tab offset (should be min of 0, max of 46)
-      //     const offset = Math.max(
-      //       Math.min(difference * 1.3, tabHeight + margin),
-      //       0
-      //     );
-
-      //     tab.style.setProperty("--y-offset", offset + "px");
-      //     tab.style.setProperty(
-      //       "--opacity",
-      //       Math.max(Math.abs((offset % 46) - 23) / 23, 0.62)
-      //     );
-      //     tab.style.setProperty(
-      //       "--scale",
-      //       Math.max(Math.abs((offset % 46) - 23) / 23, 0.98)
-      //     );
-      //   } else if (index > tabIndex) {
-      //     const difference = totalDifference - tabHeight;
-      //     const offset = Math.min(
-      //       Math.max(difference * 1.3, (tabHeight + margin) * -1),
-      //       0
-      //     );
-
-      //     tab.style.setProperty("--y-offset", offset + "px");
-      //     tab.style.setProperty(
-      //       "--opacity",
-      //       Math.max(Math.abs((offset % 46) + 23) / 23, 0.62)
-      //     );
-      //     tab.style.setProperty(
-      //       "--scale",
-      //       Math.max(Math.abs((offset % 46) + 23) / 23, 0.98)
-      //     );
-      //   }
-      // });
     };
 
     document.addEventListener(
@@ -318,11 +249,9 @@ document.addEventListener("pointerdown", e => {
         tab.onpointermove = null;
         tab.style.setProperty("--y-offset", 0);
         tab.classList.remove("tab-list-item--draggable");
-        setTimeout(() => {
-          listedTabs.forEach(tab => {
-            tab.classList.remove("tab-list-item--moving");
-          });
-        }, 1400);
+        listedTabs.forEach(tab => {
+          tab.classList.remove("tab-list-item--moving");
+        });
       },
       { once: true }
     );

@@ -196,6 +196,7 @@ document.addEventListener("pointerdown", e => {
         ),
         originalTabPositions[tab.id] + maxTabOffsetAbove
       );
+
       const yOffset = currentTabTopPosition - originalTabPositions[tab.id];
       // change dragged tab's position
       tab.style.setProperty("--y-offset", yOffset + "px");
@@ -245,13 +246,42 @@ document.addEventListener("pointerdown", e => {
 
     document.addEventListener(
       "pointerup",
-      () => {
+      event => {
         tab.onpointermove = null;
-        tab.style.setProperty("--y-offset", 0);
+        const currentTabTopPosition = Math.max(
+          Math.min(
+            event.pageY - shiftY + tabListScrollTop,
+            originalTabPositions[tab.id] + maxTabOffsetBelow
+          ),
+          originalTabPositions[tab.id] + maxTabOffsetAbove
+        );
         tab.classList.remove("tab-list-item--draggable");
-        listedTabs.forEach(tab => {
-          tab.classList.remove("tab-list-item--moving");
+        listedTabs.forEach(t => {
+          t.style.setProperty("--y-offset", 0);
+          t.classList.remove("tab-list-item--moving");
         });
+
+        if (currentTabTopPosition < originalTabPositions[tab.id]) {
+          tabsAbove.forEach(t => {
+            if (
+              originalTabPositions[t.id] + 23 > currentTabTopPosition &&
+              originalTabPositions[t.id] - margin - 23 < currentTabTopPosition
+            ) {
+              tabList.insertBefore(tab, t);
+            }
+          });
+        } else if (currentTabTopPosition > originalTabPositions[tab.id]) {
+          tabsBelow.forEach(t => {
+            if (
+              originalTabPositions[t.id] + 23 - margin <
+              currentTabTopPosition + tabHeight
+              // originalTabPositions[t.id] + tabHeight + margin + 23 >
+              // currentTabTopPosition + tabHeight
+            ) {
+              tabList.insertBefore(tab, t.nextSibling);
+            }
+          });
+        }
       },
       { once: true }
     );

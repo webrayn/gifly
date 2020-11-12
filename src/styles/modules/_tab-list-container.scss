@@ -1,0 +1,19 @@
+.tab-list-container {
+  background: purple;
+  position: relative;
+  top: calc(var(--block-height) + var(--lesser-padding) + var(--lesser-padding));
+  // width: 40rem;
+  max-height: 506px;
+  // overflow-x: hidden;
+  overflow-y: scroll;
+  // overflow-y: hidden;
+  padding: 0;
+  margin: 0;
+  // scroll-behavior: smooth;
+
+  // &--scroll {
+  //   padding-right: 0;
+  // }
+
+  
+}

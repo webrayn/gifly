@@ -9,40 +9,54 @@
   // outline-color: gold;
   outline: none;
   box-shadow: inset 0 0 0 0.1rem lime;
-  transition: box-shadow 200ms ease-in-out;
+  // transition: box-shadow 100ms ease-in-out;
   // box-shadow: 0 0 0 2px orange;
   // animation: 5s glow infinite alternate ease-in-out;
 }
 
 :root {
-  font-size: 20px;
-  font-family: 'Open Sans', sans-serif;
   --block-height: 2rem;
   --border-radius: calc(var(--block-height) / 4);
   --color-one: #3d3e48;
   --color-two: #636374;
-  width: 100%;
-  color: var(--color-one);
-  background: #3d3e48;
   --golden-ratio: 1.61803398875;
   --greater-padding: 0.5rem;
   --lesser-padding: 0.3rem;
   --icon-color: white;
   --num-of-deleted: 0;
+  font-size: 20px;
+  font-family: 'Open Sans', sans-serif;
+  color: var(--color-one);
+  background: #3d3e48;
+  // background: green;
+
+}
+
+html, body {
+  // max-height: 558px;
+  // position: relative;
+  // overflow: hidden;
 }
 
 body {
+  // position: absolute;
   position: relative;
   width: 36rem;
   // display: flex;
   // flex-direction: column;
   // padding-right: -0.5rem;
+  // height: 200px;
+  // overflow: hidden;
+  // overflow: auto;
   // height: 100%;
-  overflow: hidden;
-  scroll-behavior: smooth;
+  // max-height: 400px;
+  // overflow: hidden;
+  // overflow: auto;
+  // scroll-behavior: smooth;
   // padding: 0 var(--lesser-padding);
-  padding: 0;
-  // background: blueviolet;
+  // padding: 0;
+  // padding-top: 52px;
+  // background: red;
 
   // &::before {
   //   content: "";
@@ -60,29 +74,29 @@ button {
   border: none;
 }
 
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-two) #3d3e48;
-}
+// * {
+//   scrollbar-width: thin;
+//   scrollbar-color: var(--color-two) #3d3e48;
+// }
 
-*::-webkit-scrollbar {
-  width: calc(var(--lesser-padding) * 3);
-}
+// *::-webkit-scrollbar {
+//   width: calc(var(--lesser-padding) * 3);
+// }
 
-*::-webkit-scrollbar-track {
-  background: #3d3e48;
-  // background: red;
-  width: 4rem;
-}
-*::-webkit-scrollbar-thumb {
-  background-color: var(--color-two);
-  border-radius: var(--greater-padding);
-  border: var(--lesser-padding) solid #3d3e48;
+// *::-webkit-scrollbar-track {
+//   background: #3d3e48;
+//   // background: red;
+//   width: 4rem;
+// }
+// *::-webkit-scrollbar-thumb {
+//   background-color: var(--color-two);
+//   border-radius: var(--greater-padding);
+//   border: var(--lesser-padding) solid #3d3e48;
 
-  &:active {
-    background-color: #AAB;
-  }
-}
+//   &:active {
+//     background-color: #AAB;
+//   }
+// }
 
 
 @keyframes glow {
@@ -91,6 +105,6 @@ button {
   }
 
   to {
-    box-shadow: 0 0 0 2px #66ff66;
+    box-shadow: 0 0 0 2px red;
   }
 }

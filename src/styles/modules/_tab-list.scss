@@ -6,8 +6,10 @@
   position: relative;
   // top: calc(var(--block-height) + var(--lesser-padding) + var(--lesser-padding));
   // margin-top: calc(var(--block-height) + var(--lesser-padding) + var(--lesser-padding));
-  width: 60%;
+  width: calc(36rem - var(--lesser-padding) * 2);
+  // flex: 0 1 100%;
   list-style: none;
+  height: max-content;
   // flex: 1 1 0;
   // max-height: 506px;
   // overflow-y: auto;
@@ -18,11 +20,11 @@
   // flex-direction: column;
   // scroll-behavior: smooth;
   // overflow: visible;
-  // background: purple;
+  // background: blue;
 
-  &--scroll {
-    padding-right: 0;
-  }
+  // &--scroll {
+  //   padding-right: 0;
+  // }
 
   // &--deleting {
   //   padding-bottom: var(--block-height);

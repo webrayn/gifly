@@ -1,9 +1,16 @@
 .tab-list-container {
-  background: purple;
+  // display: flex;
+  // flex-wrap: nowrap;
+  // align-items: stretch;
+  // justify-items: center;
+  // background: purple;
   position: relative;
-  top: calc(var(--block-height) + var(--lesser-padding) + var(--lesser-padding));
-  // width: 40rem;
+  top: var(--header-height);
+  width: 40rem;
+  // width: 100%;
   max-height: 506px;
+  // height: max-content;
+  // height: 506px;
   // overflow-x: hidden;
   overflow-y: scroll;
   // overflow-y: hidden;

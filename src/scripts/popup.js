@@ -170,8 +170,9 @@ document.addEventListener("pointerdown", e => {
     const headerHeight = document.getElementById("header").offsetHeight;
     const tabList = document.getElementById("tab-list");
     const tabListContainer = document.getElementById("tab-list-container");
-    const tabListBottom =
-      tabListContainer.offsetTop + tabListContainer.offsetHeight;
+    // const tabListContainerHeight =
+    //   tabListContainer.offsetTop + tabListContainer.offsetHeight;
+    const tabListContainerHeight = tabListContainer.offsetHeight; // 506 when there are 11 tabs
     // this value will have to change if user drags todo far enough below or above
     let tabListScrollTop = tabListContainer.scrollTop;
     const tab = e.target.parentElement;
@@ -194,10 +195,7 @@ document.addEventListener("pointerdown", e => {
         tabListScrollTop) *
       -1;
     let maxTabOffsetBelow =
-      tabListBottom -
-      originalTabPositions[tab.id] -
-      headerHeight +
-      tabListScrollTop;
+      tabListContainerHeight - originalTabPositions[tab.id] + tabListScrollTop;
     listedTabs
       .filter(t => t.id != tab.id)
       .forEach(t => t.classList.add("tab-list-item--moving"));
@@ -225,23 +223,14 @@ document.addEventListener("pointerdown", e => {
         currentTabTopPosition >=
         originalTabPositions[tab.id] + maxTabOffsetBelow
       ) {
-        // tabListScrollTop += Math.min(event.pageY - shiftY - 506, 4);
-        // maxTabOffsetBelow =
-        //   tabListBottom -
-        //   originalTabPositions[tab.id] -
-        //   tabListPosition +
-        //   tabListScrollTop;
-        // maxTabOffsetAbove =
-        //   (originalTabPositions[tab.id] -
-        //     tabListPosition -
-        //     margin -
-        //     tabListScrollTop) *
-        //   -1;
-        // tabListContainer.scrollBy(0, 50);
+        console.log(originalTabPositions[tab.id] + maxTabOffsetBelow); // 506
+        // console.log(currentTabTopPosition);
         tabList.style.setProperty(
           "--y-offset",
-          (event.pageY - shiftY - 506) * -1 + "px"
+          // (event.pageY - shiftY - 506) * -1 + "px"
+          (event.pageY - shiftY - tabListContainerHeight) * -1 + "px"
         );
+        // console.log((event.pageY - shiftY - 506) * -1);
       }
 
       tabsAbove.forEach(tab => {
@@ -296,7 +285,7 @@ document.addEventListener("pointerdown", e => {
           tabList.style.getPropertyValue("--y-offset") || 0
         );
         tabList.style.setProperty("--y-offset", 0 + "px");
-        tabListContainer.scroll(0, tabListOffset * -1);
+        tabListContainer.scroll(0, (tabListOffset - tabListScrollTop) * -1);
 
         tab.onpointermove = null;
         const currentTabTopPosition = event.pageY - shiftY + tabListScrollTop;
@@ -333,161 +322,3 @@ document.addEventListener("pointerdown", e => {
     );
   }
 });
-
-// // there is no reason to get listedTabs each time on mousedown. listedTabs should be in outer scope, gathered during app start and/or filter call.
-// // same applies to their positions.
-// const listedTabs = [...document.getElementsByClassName("tab-list-item")];
-// const headerHeight = 46;
-// const tabComponentIndex = listedTabs.findIndex(
-//   tab => tab.id === tabComponent.id
-// );
-
-// const tabPositions = listedTabs.map(tab => tab.offsetTop + headerHeight);
-// const draggedTabOriginalPosition = tabPositions[tabComponentIndex];
-// const tabList = document.getElementById("tab-list");
-// const tabListBottom = tabList.offsetTop + tabList.offsetHeight;
-// const maxTabOffsetAbove = (draggedTabOriginalPosition - 52) * -1;
-// const maxTabOffsetBelow = tabListBottom - draggedTabOriginalPosition - 46;
-
-// listedTabs
-//   .filter((tab, index) => index != tabComponentIndex)
-//   .forEach(tab => tab.classList.add("tab-list-item--moving"));
-
-// // get the position of the cursor within the tabComponent
-// let shiftY = e.clientY - tabComponent.getBoundingClientRect().top;
-
-// tabComponent.classList.add("tab-list-item--draggable");
-// tabComponent.ondragstart = function () {
-//   return false;
-// };
-
-// // moves tab up or down
-// const moveAt = function (pageY) {
-//   let yOffset =
-//     pageY +
-//     tabList.scrollTop -
-//     tabComponent.offsetTop -
-//     shiftY -
-//     headerHeight;
-//   // if (yOffset < maxTabOffsetAbove) {
-//   //   yOffset = maxTabOffsetAbove;
-//   // } else if (yOffset > maxTabOffsetBelow) {
-//   //   yOffset = maxTabOffsetBelow;
-//   // }
-//   tabComponent.style.setProperty("--y-pos", yOffset + "px");
-// };
-
-// const onMouseMove = function (event) {
-//   moveAt(event.pageY);
-//   const currentTabTopPosition = tabComponent.getBoundingClientRect().top;
-//   const currentTabBottomPosition = tabComponent.getBoundingClientRect()
-//     .bottom;
-
-//   listedTabs.forEach((tab, index) => {
-//     // if tab is above current tab
-//     if (index < tabComponentIndex) {
-//       const totalDifference = Math.max(
-//         tabPositions[index] -
-//         tabList.scrollTop +
-//         46 -
-//         currentTabTopPosition,
-//         0
-//       );
-//       const actualDifference = Math.min(totalDifference, 46);
-//       tab.style.setProperty("--y-offset", actualDifference + "px");
-//       tab.style.setProperty(
-//         "--opacity",
-//         Math.max(Math.abs((actualDifference % 46) - 23) / 23, 0.62)
-//       );
-//       tab.style.setProperty(
-//         "--scale",
-//         Math.max(Math.abs((actualDifference % 46) - 23) / 23, 0.98)
-//       );
-//       // console.log(`${tab.id} offest by ${Math.min(difference, 46)}`);
-//     } else if (index > tabComponentIndex) {
-//       const totalDifference = Math.min(
-//         tabPositions[index] -
-//         tabList.scrollTop -
-//         6 -
-//         currentTabBottomPosition,
-//         0
-//       );
-//       const actualDifference = Math.max(totalDifference, -46);
-//       tab.style.setProperty("--y-offset", actualDifference + "px");
-//       tab.style.setProperty(
-//         "--opacity",
-//         Math.max(Math.abs((actualDifference % 46) + 23) / 23, 0.62)
-//       );
-//       tab.style.setProperty(
-//         "--scale",
-//         Math.max(Math.abs((actualDifference % 46) + 23) / 23, 0.98)
-//       );
-//       // tab.style.setProperty("--opacity", actualDifference);
-//       // console.log(`${tab.id} offest by ${Math.max(difference, -46)}`);
-//     }
-//   });
-// };
-
-// moveAt(e.pageY);
-
-// document.addEventListener("mousemove", onMouseMove);
-
-// document.onmouseup = function () {
-//   document.removeEventListener("mousemove", onMouseMove);
-//   tabComponent.onmouseup = null;
-//   // tabComponent.style.top = 0;
-//   tabComponent.classList.remove("tab-list-item--draggable");
-//   const currentTabTopPosition =
-//     tabComponent.getBoundingClientRect().top + tabList.scrollTop;
-//   // const tabList = document.getElementById("tab-list");
-//   listedTabs.forEach((tab, index) => {
-//     tab.style.setProperty("--y-offset", 0);
-//     // setTimeout(() => tab.classList.remove("tab-list-item--moving"), 140);
-//     tab.classList.remove("tab-list-item--moving");
-//     // insert tab in new position
-//     if (
-//       tabPositions[index] + 23 > currentTabTopPosition &&
-//       tabPositions[index] - 23 < currentTabTopPosition
-//     ) {
-//       // console.log(currentTabTopPosition);
-//       tabList.insertBefore(tabComponent, tab);
-//     }
-//   });
-// };
-//   }
-// });
-
-// document.addEventListener("mouseup", e => {
-//   document.removeEventListener("mousemove", onMouseMove);
-//   tabComponent.onmouseup = null;
-//   tabComponent.classList.remove("tab-list-item--draggable");
-// }
-
-// document.addEventListener("pointermove", e => {
-//   if (e.target.classList.contains("tab-list-item__tab-button")) {
-//     const tabComponent = e.target.parentElement;
-//     let newTop = e.clientY - tabComponent.getBoundingClientRect().top;
-//     tabComponent.style.top = newTop + "px";
-//   }
-// });
-
-// document.addEventListener("pointerup", e => {
-//   if (e.target.classList.contains("tab-list-item__tab-button")) {
-//     const tabComponent = e.target.parentElement;
-//     // const tabComponentRect = tabComponent.getBoundingClientRect();
-//     // alert(tabComponentRect.top);
-//     tabComponent.classList.remove("tab-list-item--draggable");
-//   }
-// });
-
-// document.addEventListener("mouseover", e => {
-//   if (e.target.classList.contains("tab-list-item")) {
-//     const tabId = parseInt(e.target.id.split("-")[1]);
-//     chrome.tabs.get(tabId, function (tab) {
-//       chrome.tabs.highlight({ tabs: tab.index }, function () {
-//         chrome.browserAction.openPopup();
-//       });
-//     });
-//     // chrome.tabs.highlight({ tabs: [tabId] });
-//   }
-// });

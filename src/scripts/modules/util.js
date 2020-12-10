@@ -26,7 +26,78 @@ function addNewColor(URL) {
   }
 }
 
+function getListedTabs() {
+  return [...document.getElementsByClassName("tab-list-item")] || [];
+}
+
+function calculateScrollbarHeight() {
+  const container = document.getElementById("tab-list-container");
+  const margin = 6;
+  const visibleContentHeight = container.offsetHeight - margin; // 500
+  const wholeContentHeight = container.scrollHeight - margin;
+  const contentHeightRatio = visibleContentHeight / wholeContentHeight;
+  const scrollbarHeight = visibleContentHeight * contentHeightRatio;
+  return scrollbarHeight;
+}
+
+function adjustScrollbarHeight() {
+  const scrollbarThumb = document.getElementById("scrollbar-thumb");
+
+  scrollbarThumb.style.setProperty(
+    "--thumb-height",
+    calculateScrollbarHeight() + "px"
+  );
+}
+
+function scroll(distance, scrollBarOnly = false) {
+  const container = document.getElementById("tab-list-container");
+  const content = container.children[0];
+  const margin = 6;
+  const visibleContentHeight = container.offsetHeight - margin; // 500
+  const wholeContentHeight = container.scrollHeight - margin;
+  const hiddenContentHeight = wholeContentHeight - visibleContentHeight;
+
+  // const contentOffsetHeight = content.offsetHeight;
+  const scrollbarThumb = document.getElementById("scrollbar-thumb");
+
+  const containerScrollTop = Number.parseFloat(
+    container.style.getPropertyValue("--scrolltop") || 0
+  );
+
+  const containerToContentRatio = visibleContentHeight / wholeContentHeight;
+  // this value doesn't change no matter where thumb is. Max offset is always the same.
+  const maxScrollbarThumbOffset = hiddenContentHeight * containerToContentRatio;
+  const currentThumbOffset = containerScrollTop * containerToContentRatio;
+
+  if (currentThumbOffset < maxScrollbarThumbOffset) {
+    const newScrollbarThumbOffset = distance * containerToContentRatio;
+
+    scrollbarThumb.style.setProperty(
+      "--thumb-offset",
+      Math.min(newScrollbarThumbOffset, maxScrollbarThumbOffset) + "px"
+    );
+  }
+
+  if (scrollBarOnly == false) {
+    const availableScrollDistance = hiddenContentHeight;
+
+    if (containerScrollTop < availableScrollDistance) {
+      const maxOffset = (hiddenContentHeight - containerScrollTop) * -1;
+      const newOffset = distance * -1;
+
+      content.style.setProperty(
+        "--y-offset",
+        Math.max(newOffset, maxOffset) + "px"
+      );
+    }
+  }
+}
+
 module.exports = {
   adjustBodyPadding,
-  addNewColor
+  addNewColor,
+  getListedTabs,
+  adjustScrollbarHeight,
+  calculateScrollbarHeight,
+  scroll
 };

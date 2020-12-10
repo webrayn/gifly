@@ -1,6 +1,6 @@
 .tab-list {
   --y-offset: 0px;
-  transform: translateY(var(--y-offset));
+  // transform: translateY(var(--y-offset));
   // transition: transform 30ms ease-in-out;
   // position: absolute;
   position: relative;
@@ -13,7 +13,8 @@
   // flex: 1 1 0;
   // max-height: 506px;
   // overflow-y: auto;
-  padding: 0 var(--lesser-padding);
+  padding: 0 var(--lesser-padding) var(--lesser-padding) var(--lesser-padding);
+  // padding-bottom: var(--lesser-padding);
   // margin-top: calc(var(--lesser-padding) * -1);
   // background: green;
   // display: flex;
@@ -21,10 +22,12 @@
   // scroll-behavior: smooth;
   // overflow: visible;
   // background: blue;
+  // background: orange;
 
-  // &--scroll {
-  //   padding-right: 0;
-  // }
+  &--scroll {
+    transform: translateY(var(--y-offset));
+    transition: transform 30ms ease-in-out;
+  }
 
   // &--deleting {
   //   padding-bottom: var(--block-height);

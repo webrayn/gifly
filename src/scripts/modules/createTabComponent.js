@@ -57,13 +57,13 @@ function createTabComponent(tab) {
   const tabButton = document.createElement("button");
   tabButton.classList.add("tab-list-item__tab-button");
 
-  tabComponent.appendChild(activeIndicator);
-  tabComponent.appendChild(duplicateIndicator);
+  tabComponent.appendChild(tabButton);
   tabComponent.appendChild(checkbox);
   tabComponent.appendChild(favIcon);
   tabComponent.appendChild(p);
+  tabComponent.appendChild(activeIndicator);
+  tabComponent.appendChild(duplicateIndicator);
   tabComponent.appendChild(deleteButton);
-  tabComponent.appendChild(tabButton);
 
   return tabComponent;
 }

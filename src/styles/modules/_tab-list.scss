@@ -26,7 +26,7 @@
 
   &--scroll {
     transform: translateY(var(--y-offset));
-    transition: transform 30ms ease-in-out;
+    // transition: transform 30ms ease-in-out;
   }
 
   // &--deleting {

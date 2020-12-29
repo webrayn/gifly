@@ -49,7 +49,21 @@ function adjustScrollbarHeight() {
   );
 }
 
-function scroll(distance, scrollBarOnly = false) {
+function calculateScrollSpeed() { }
+
+function dragTab(options = {}) {
+  const { distance = 0, speed = 0 } = options;
+  const draggedTab = document.getElementsByClassName(
+    "tab-list-item--draggable"
+  )[0];
+  if (draggedTab) {
+    draggedTab.style.setProperty("--y-offset", distance + "px");
+  }
+}
+
+function scroll(distance, options = {}) {
+  const { scrollBarOnly = false, speed = 0 } = options;
+  dragTab({ distance });
   const container = document.getElementById("tab-list-container");
   const content = container.children[0];
   const margin = 6;
@@ -79,6 +93,7 @@ function scroll(distance, scrollBarOnly = false) {
   }
 
   if (scrollBarOnly == false) {
+    content.classList.add("tab-list--scroll");
     const availableScrollDistance = hiddenContentHeight;
 
     if (containerScrollTop < availableScrollDistance) {
@@ -99,5 +114,6 @@ module.exports = {
   getListedTabs,
   adjustScrollbarHeight,
   calculateScrollbarHeight,
-  scroll
+  scroll,
+  dragTab
 };

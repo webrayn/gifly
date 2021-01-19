@@ -1,6 +1,8 @@
+const util = require("./modules/util");
 const createTabComponent = require("./modules/createTabComponent");
 const renderTabComponent = require("./modules/renderTabComponent");
-const util = require("./modules/util");
+const initializeDrag = require("./modules/initializeDrag");
+const scroll = require("./modules/scroll");
 
 // before closing browser, call localStorage.removeItem(key) for all the titles, removing everything
 
@@ -140,6 +142,10 @@ chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, function (
   state.renderedTabs = util.getListedTabs();
 });
 
+// document.addEventListener("pointermove", e => {
+//   console.log(e.clientX, e.clientY);
+// });
+
 document.addEventListener("click", e => {
   if (e.target.classList.contains("tab-list-item__delete-button")) {
     // alert(e.target.parentElement.id);
@@ -160,212 +166,17 @@ document.addEventListener("click", e => {
   }
 });
 
-// const bottomDiv = document.getElementById("bottom-div");
-// bottomDiv.addEventListener("pointerenter", e => {
-//   alert("entered");
-// });
-
 const tabListContainer = document.getElementById("tab-list-container");
 
 tabListContainer.addEventListener("scroll", e => {
-  util.scroll(e.target.scrollTop, true);
+  const scrollTop = e.target.scrollTop;
+  const scrollOptions = { distance: scrollTop, scrollBarOnly: true };
+  scroll.call(state.dragState, scrollOptions);
   e.target.style.setProperty("--scrolltop", e.target.scrollTop);
 });
 
-function initializeDrag(tab) {
-  return {
-    draggedTab: tab,
-    pointerPosition: 0,
-    draggedTabPosition: 0,
-    shouldScroll: draggedTabPosition > 426
-  };
-}
-
 document.addEventListener("pointerdown", e => {
   if (e.target.classList.contains("tab-list-item__tab-button")) {
-    // state.dragState = initializeDrag(e.target.parentElement);
-    const tab = e.target.parentElement;
-    let draggedTabPosition = 0; //change this each time pointermove event fires. Store Y position. If it's below 426, that means scroll.
-    let shouldScroll = draggedTabPosition > 426;
-    const headerHeight = document.getElementById("header").offsetHeight;
-    const tabList = document.getElementById("tab-list");
-    const tabListHeight = tabList.offsetHeight;
-    const tabListContainer = document.getElementById("tab-list-container");
-    // const tabListContainerHeight =
-    //   tabListContainer.offsetTop + tabListContainer.offsetHeight;
-    const tabListContainerHeight = tabListContainer.offsetHeight; // 506 when there are 11 tabs
-    // this value will have to change if user drags todo far enough below or above
-    let tabListScrollTop = tabListContainer.scrollTop;
-    tabListContainer.style.setProperty("--scrolltop", tabListScrollTop);
-    const margin = 6;
-    const tabHeight = 40;
-    const shiftY = e.clientY - tab.getBoundingClientRect().top;
-    const tabListPosition = tabList.offsetTop;
-    const listedTabs = util.getListedTabs();
-    const tabIndex = listedTabs.findIndex(t => t.id === tab.id);
-    const tabsAbove = listedTabs.slice(0, tabIndex);
-    const tabsBelow = listedTabs.slice(tabIndex + 1);
-    const scrollbarThumb = document.getElementById("scrollbar-thumb");
-    const originalTabPositions = listedTabs.reduce((a, t) => {
-      a[t.id] = t.offsetTop + headerHeight;
-      return a;
-    }, {});
-
-    // let start;
-    // let animation = null;
-    // let position = 0;
-
-    // const step = timestamp => {
-    //   if (start === undefined) {
-    //     start = timestamp;
-    //   }
-    //   const elapsed = timestamp - start;
-    //   // util.scroll(
-    //   //   draggedTabPosition - Math.max(426, originalTabPositions[tab.id])
-    //   // );
-    //   util.scroll(100);
-    //   // console.log(shouldScroll);
-
-    //   if (shouldScroll) {
-    //     window.requestAnimationFrame(step);
-    //   }
-    // };
-
-    // window.requestAnimationFrame(step);
-
-    let maxTabOffsetAbove =
-      originalTabPositions[tab.id] - headerHeight - tabListScrollTop;
-
-    let maxTabOffsetBelow =
-      tabListHeight -
-      margin +
-      headerHeight -
-      tab.offsetHeight -
-      originalTabPositions[tab.id];
-    // console.log(
-    //   `Above: ${maxTabOffsetAbove}, below: ${maxTabOffsetBelow}, scrollTop: ${tabListScrollTop}`
-    // );
-
-    listedTabs
-      .filter(t => t.id != tab.id)
-      .forEach(t => t.classList.add("tab-list-item--moving"));
-
-    tab.classList.add("tab-list-item--draggable");
-    tab.setPointerCapture(e.pointerId);
-
-    tab.onpointermove = function (event) {
-      // it's possible scrolltop was updated while tab was already draggable, when user scrolled via mouse wheel. So we have to get it on every mouse move.
-      tabListScrollTop = +tabListContainer.style.getPropertyValue(
-        "--scrolltop"
-      );
-
-      // const currentTabTopPosition = event.pageY - shiftY + tabListScrollTop;
-      draggedTabPosition = event.pageY - shiftY;
-      shouldScroll = draggedTabPosition > 426;
-      if (shouldScroll) {
-        const distanceToScroll =
-          draggedTabPosition - Math.max(426, originalTabPositions[tab.id]);
-        util.scroll(distanceToScroll);
-        // animation = window.requestAnimationFrame(step);
-      }
-      // window.requestAnimationFrame(step);
-
-      const yOffset =
-        draggedTabPosition - originalTabPositions[tab.id] + tabListScrollTop;
-
-      // change dragged tab's position
-      util.dragTab({ distance: Math.min(yOffset, maxTabOffsetBelow) });
-
-      // NOTE: event.pageY ignores scrolltop of tabListContainer (naturally) so you have to consider this in calculations
-
-      tabsAbove.forEach(tab => {
-        const totalDifference =
-          originalTabPositions[tab.id] - draggedTabPosition - tabListScrollTop;
-        // get the difference between the bottom of todo and the top of draggable todo.
-        const difference = totalDifference + tabHeight;
-        // calculate tab offset (should be min of 0, max of 46)
-        const offset = Math.max(
-          Math.min(difference * 1.3, tabHeight + margin),
-          0
-        );
-
-        tab.style.setProperty("--y-offset", offset + "px");
-        tab.style.setProperty(
-          "--opacity",
-          Math.max(Math.abs(offset - 23) / 23, 0.62)
-        );
-        tab.style.setProperty(
-          "--scale",
-          Math.max(Math.abs(offset - 23) / 23, 0.98)
-        );
-      });
-
-      tabsBelow.forEach(tab => {
-        const totalDifference =
-          originalTabPositions[tab.id] - draggedTabPosition - tabListScrollTop;
-        const difference = totalDifference - tabHeight;
-        const offset = Math.min(
-          Math.max(difference * 1.3, (tabHeight + margin) * -1),
-          0
-        );
-
-        tab.style.setProperty("--y-offset", offset + "px");
-        tab.style.setProperty(
-          "--opacity",
-          Math.max(Math.abs(offset + 23) / 23, 0.62)
-        );
-        tab.style.setProperty(
-          "--scale",
-          Math.max(Math.abs(offset + 23) / 23, 0.98)
-        );
-      });
-    };
-
-    document.addEventListener(
-      "pointerup",
-      event => {
-        // get tabList offset value, and scroll by that amount
-        // remember to hide system scrollbar and add custom one that scrolls with the offset
-        const tabListOffset = Number.parseFloat(
-          tabList.style.getPropertyValue("--y-offset") || 0
-        );
-        tabList.style.setProperty("--y-offset", 0 + "px");
-        tabList.classList.remove("tab-list--scroll");
-        tabListContainer.scroll(0, (tabListOffset - tabListScrollTop) * -1);
-        tabListContainer.style.setProperty("--scrolltop", tabListScrollTop);
-
-        tab.onpointermove = null;
-        const currentTabTopPosition = event.pageY - shiftY + tabListScrollTop;
-
-        tab.classList.remove("tab-list-item--draggable");
-        listedTabs.forEach(t => {
-          t.style.setProperty("--y-offset", 0);
-          t.classList.remove("tab-list-item--moving");
-        });
-
-        if (currentTabTopPosition < originalTabPositions[tab.id]) {
-          tabsAbove.forEach(t => {
-            if (
-              originalTabPositions[t.id] + 23 > currentTabTopPosition &&
-              originalTabPositions[t.id] - margin - 23 < currentTabTopPosition
-            ) {
-              tabList.insertBefore(tab, t);
-            }
-          });
-        } else if (currentTabTopPosition > originalTabPositions[tab.id]) {
-          tabsBelow.forEach(t => {
-            if (
-              originalTabPositions[t.id] + 23 - margin <
-              currentTabTopPosition + tabHeight
-              // originalTabPositions[t.id] + tabHeight + margin + 23 >
-              // currentTabTopPosition + tabHeight
-            ) {
-              tabList.insertBefore(tab, t.nextSibling);
-            }
-          });
-        }
-      },
-      { once: true }
-    );
+    initializeDrag.call(state, e);
   }
 });

@@ -15,6 +15,10 @@
   --active-indcator-space: calc(var(--greater-padding) + var(--lesser-padding));
   --opacity: 1;
   --scale: 1;
+  --float-x-from: 0;
+  --float-x-to: 0;
+  --float-y-from: 0;
+  --float-y-to: 0;
   // transform: translateY(0);
   // transform: translateY(var(--y-offset));
   // transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
@@ -183,6 +187,10 @@
     z-index: -1000;
   }
 
+  &--moveable {
+    animation: 1s float infinite alternate ease-in-out;
+  }
+
   &--duplicate {
 
     & .tab-list-item__duplicate-indicator {
@@ -231,5 +239,18 @@
       //   background: red;
       // }
     }
+  }
+}
+
+
+@keyframes float {
+  from {
+    // transform: translateX(-6px);
+    transform: translate(var(--float-x-from), var(--float-y-from));
+  }
+
+  to {
+    // transform: translateX(6px);
+    transform: translate(var(--float-x-to), var(--float-y-to));
   }
 }

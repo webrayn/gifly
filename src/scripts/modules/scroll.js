@@ -20,13 +20,13 @@ function scroll(options = {}) {
   );
 
   const containerToContentRatio = visibleContentHeight / wholeContentHeight;
+
   // this value doesn't change no matter where thumb is. Max offset is always the same.
   const maxScrollbarThumbOffset = hiddenContentHeight * containerToContentRatio;
   const currentThumbOffset = containerScrollTop * containerToContentRatio;
 
   if (currentThumbOffset < maxScrollbarThumbOffset) {
     const newScrollbarThumbOffset = distance * containerToContentRatio;
-
     scrollbarThumb.style.setProperty(
       "--thumb-offset",
       Math.min(newScrollbarThumbOffset, maxScrollbarThumbOffset) + "px"

@@ -16,7 +16,7 @@ function onTabDrag(event) {
     const distanceToScroll =
       this.draggedTabPosition -
       Math.max(426, this.originalTabPositions[this.draggedTab.id]);
-    scroll(distanceToScroll);
+    scroll.call(this, { distance: distanceToScroll });
   }
 
   const yOffset =

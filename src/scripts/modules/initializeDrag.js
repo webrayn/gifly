@@ -21,7 +21,17 @@ function initializeDrag(event) {
   draggedTab.classList.add("tab-list-item--draggable");
   listedTabs
     .filter(t => t.id != draggedTab.id)
-    .forEach(t => t.classList.add("tab-list-item--moving"));
+    .forEach(t => {
+      t.classList.add("tab-list-item--moveable", "tab-list-item--moving");
+      const xFrom = Math.random() * -4 + "px";
+      const xTo = Math.random() * 4 + "px";
+      const yFrom = Math.random() * -4 + "px";
+      const yTo = Math.random() * 4 + "px";
+      t.style.setProperty("--float-x-from", xFrom);
+      t.style.setProperty("--float-x-to", xTo);
+      t.style.setProperty("--float-y-from", yFrom);
+      t.style.setProperty("--float-y-to", yTo);
+    });
   const originalTabPositions = listedTabs.reduce((a, t) => {
     a[t.id] = t.offsetTop + headerHeight;
     return a;

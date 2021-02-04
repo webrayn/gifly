@@ -23,14 +23,6 @@ function initializeDrag(event) {
     .filter(t => t.id != draggedTab.id)
     .forEach(t => {
       t.classList.add("tab-list-item--moveable", "tab-list-item--moving");
-      const xFrom = Math.random() * -4 + "px";
-      const xTo = Math.random() * 4 + "px";
-      const yFrom = Math.random() * -4 + "px";
-      const yTo = Math.random() * 4 + "px";
-      t.style.setProperty("--float-x-from", xFrom);
-      t.style.setProperty("--float-x-to", xTo);
-      t.style.setProperty("--float-y-from", yFrom);
-      t.style.setProperty("--float-y-to", yTo);
     });
   const originalTabPositions = listedTabs.reduce((a, t) => {
     a[t.id] = t.offsetTop + headerHeight;
@@ -38,6 +30,7 @@ function initializeDrag(event) {
   }, {});
 
   this.dragState = {
+    active: true,
     draggedTab,
     pointerPosition: 0,
     draggedTabPosition: 0,
@@ -65,8 +58,8 @@ function initializeDrag(event) {
     }
   };
 
-  draggedTab.onpointermove = onTabDrag.bind(this.dragState);
-  draggedTab.onpointerup = onTabDragEnd.bind(this.dragState);
+  draggedTab.onpointermove = onTabDrag.bind(this);
+  draggedTab.onpointerup = onTabDragEnd.bind(this);
   // document.addEventListener("pointerup", onTabDrag, { once: true });
 }
 

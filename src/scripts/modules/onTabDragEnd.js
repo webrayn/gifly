@@ -1,51 +1,62 @@
 "use strict";
 
 function onTabDragEnd(event) {
+  const dragState = this.dragState;
   // get tabList offset value, and scroll by that amount
   // remember to hide system scrollbar and add custom one that scrolls with the offset
   const tabListOffset = Number.parseFloat(
-    this.tabList.style.getPropertyValue("--y-offset") || 0
+    dragState.tabList.style.getPropertyValue("--y-offset") || 0
   );
-  this.tabList.style.setProperty("--y-offset", 0 + "px");
-  this.tabList.classList.remove("tab-list--scroll");
-  this.tabListContainer.scroll(0, (tabListOffset - this.tabListScrollTop) * -1);
-  this.tabListContainer.style.setProperty("--scrolltop", this.tabListScrollTop);
+  dragState.tabList.style.setProperty("--y-offset", 0 + "px");
+  dragState.tabList.classList.remove("tab-list--scroll");
+  dragState.tabListContainer.scroll(
+    0,
+    (tabListOffset - dragState.tabListScrollTop) * -1
+  );
+  dragState.tabListContainer.style.setProperty(
+    "--scrolltop",
+    dragState.tabListScrollTop
+  );
 
-  this.draggedTab.onpointermove = null;
-  this.draggedTab.onpointerup = null;
+  dragState.draggedTab.onpointermove = null;
+  dragState.draggedTab.onpointerup = null;
   const currentTabTopPosition =
-    event.pageY - this.shiftY + this.tabListScrollTop;
+    event.pageY - dragState.shiftY + dragState.tabListScrollTop;
 
-  this.draggedTab.classList.remove("tab-list-item--draggable");
-  this.listedTabs.forEach(t => {
+  dragState.draggedTab.classList.remove("tab-list-item--draggable");
+  dragState.listedTabs.forEach(t => {
     t.style.setProperty("--y-offset", 0);
-    t.classList.remove("tab-list-item--moving");
+    t.classList.remove("tab-list-item--moveable", "tab-list-item--moving");
   });
 
-  if (currentTabTopPosition < this.originalTabPositions[this.draggedTab.id]) {
-    this.tabsAbove.forEach(t => {
+  if (
+    currentTabTopPosition <
+    dragState.originalTabPositions[dragState.draggedTab.id]
+  ) {
+    dragState.tabsAbove.forEach(t => {
       if (
-        this.originalTabPositions[t.id] + 23 > currentTabTopPosition &&
-        this.originalTabPositions[t.id] - this.margin - 23 <
+        dragState.originalTabPositions[t.id] + 23 > currentTabTopPosition &&
+        dragState.originalTabPositions[t.id] - dragState.margin - 23 <
         currentTabTopPosition
       ) {
-        this.tabList.insertBefore(this.draggedTab, t);
+        dragState.tabList.insertBefore(dragState.draggedTab, t);
       }
     });
   } else if (
-    currentTabTopPosition > this.originalTabPositions[this.draggedTab.id]
+    currentTabTopPosition >
+    dragState.originalTabPositions[dragState.draggedTab.id]
   ) {
-    this.tabsBelow.forEach(t => {
+    dragState.tabsBelow.forEach(t => {
       if (
-        this.originalTabPositions[t.id] + 23 - this.margin <
-        currentTabTopPosition + this.tabHeight
-        // originalTabPositions[t.id] + tabHeight + margin + 23 >
-        // currentTabTopPosition + tabHeight
+        dragState.originalTabPositions[t.id] + 23 - dragState.margin <
+        currentTabTopPosition + dragState.tabHeight
       ) {
-        this.tabList.insertBefore(this.draggedTab, t.nextSibling);
+        dragState.tabList.insertBefore(dragState.draggedTab, t.nextSibling);
       }
     });
   }
+
+  dragState = null;
 }
 
 module.exports = onTabDragEnd;

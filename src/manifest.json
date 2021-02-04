@@ -14,7 +14,7 @@
     "chrome://favicon/"
   ],
   "browser_action": {
-    "default_icon": "images/get_started16.png",
+    "default_icon": "images/tabble16.png",
     "default_popup": "index.html",
     "default_title": "Power Tabber popup"
   },

@@ -4,7 +4,10 @@ const dragTab = require("./dragTab");
 
 function scroll(options = {}) {
   const { distance = 0, scrollBarOnly = false, speed = 0 } = options;
-  dragTab.call(this, { distance });
+  const dragState = this.dragState;
+  if (dragState.active) {
+    dragTab.call(dragState, { distance });
+  }
   const container = document.getElementById("tab-list-container");
   const content = container.children[0];
   const margin = 6;

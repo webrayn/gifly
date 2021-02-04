@@ -121,13 +121,8 @@ const state = {
   // have to keep order of all tab Ids so that they can be moved on UI (before actual browser tabs are moved)
   availableColors: [],
   renderedTabs: [],
-  dragState: {
-    draggedTab: null,
-    tabsAbove: null,
-    tabsBelow: null,
-    pointerPosition: null,
-    shouldScroll: null
-  }
+  dragState: null,
+  dragTimer: null
 };
 
 // render tabs
@@ -171,12 +166,17 @@ const tabListContainer = document.getElementById("tab-list-container");
 tabListContainer.addEventListener("scroll", e => {
   const scrollTop = e.target.scrollTop;
   const scrollOptions = { distance: scrollTop, scrollBarOnly: true };
-  scroll.call(state.dragState, scrollOptions);
+  scroll.call(state, scrollOptions);
   e.target.style.setProperty("--scrolltop", e.target.scrollTop);
 });
 
 document.addEventListener("pointerdown", e => {
   if (e.target.classList.contains("tab-list-item__tab-button")) {
-    initializeDrag.call(state, e);
+    const tabButton = e.target;
+    tabButton.parentElement.classList.add("tab-list-item--held-down");
+    state.dragTimer = setTimeout(initializeDrag.bind(state, e), 400);
+    tabButton.onpointerup = () => {
+      clearTimeout(state.dragTimer);
+    };
   }
 });

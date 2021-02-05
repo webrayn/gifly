@@ -5,8 +5,8 @@ const dragTab = require("./dragTab");
 function scroll(options = {}) {
   const { distance = 0, scrollBarOnly = false, speed = 0 } = options;
   const dragState = this.dragState;
-  if (dragState.active) {
-    dragTab.call(dragState, { distance });
+  if (dragState) {
+    dragTab.call(this, { distance });
   }
   const container = document.getElementById("tab-list-container");
   const content = container.children[0];

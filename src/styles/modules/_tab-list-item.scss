@@ -23,7 +23,8 @@
   // transform: translateY(0);
   // transform: translateY(var(--y-offset));
   // transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
-  transition: background-color 1400ms ease-in-out, transform 0ms, opacity 1400ms ease-out;
+  // transition: background-color 1400ms ease-in-out, transform 0ms, opacity 1400ms ease-out;
+  transition: none;
   touch-action: none;
   overflow: hidden;
 
@@ -32,8 +33,8 @@
   }
 
   &--held-down {
-    transform: scale(0.98);
-    transition: none;;
+    transform: scale(0.99);
+    transition: background-color 1400ms ease-in-out, transform 60ms ease-out, opacity 1400ms ease-out;
   }
 
   &--active {
@@ -45,7 +46,7 @@
   &:hover {
     background: #DDD;
     // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
-    transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
+    transition: background-color 1400ms ease-in-out, transform 60ms ease-out, opacity 1400ms ease-out;
   }
 
   &__tab-button {

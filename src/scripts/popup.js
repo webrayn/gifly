@@ -93,6 +93,8 @@ const state = {
     renderTabComponent.call(this, tab);
   },
   deleteTab(id) {
+    const tabListContainer = document.getElementById("tab-list-container");
+    this.scrolltop = tabListContainer.scrollTop;
     const tabUrl = this.tabs[id].url;
     // remove ID of deleted tab from the list of ids associated with tab URL
     this.tabURLs[tabUrl].ids = this.tabURLs[tabUrl].ids.filter(
@@ -107,7 +109,9 @@ const state = {
       // tabsList.classList.add("tab-list--deleting");
       tabsListItem.remove();
       util.adjustBodyPadding();
+      util.adjustScrollbarHeight();
       setTimeout(() => tabsList.classList.remove("tab-list--deleting"), 1400);
+      this.scrolltop -= 40;
     }, 1400);
     // if there are no more tabs with this title, tab object can be removed
     if (this.tabURLs[tabUrl].ids.length == 0) {
@@ -122,7 +126,8 @@ const state = {
   availableColors: [],
   renderedTabs: [],
   dragState: null,
-  dragTimer: null
+  dragTimer: null,
+  scrolltop: null
 };
 
 // render tabs
@@ -174,7 +179,7 @@ document.addEventListener("pointerdown", e => {
   if (e.target.classList.contains("tab-list-item__tab-button")) {
     const tabButton = e.target;
     tabButton.parentElement.classList.add("tab-list-item--held-down");
-    state.dragTimer = setTimeout(initializeDrag.bind(state, e), 400);
+    state.dragTimer = setTimeout(initializeDrag.bind(state, e), 300);
     tabButton.onpointerup = () => {
       clearTimeout(state.dragTimer);
     };

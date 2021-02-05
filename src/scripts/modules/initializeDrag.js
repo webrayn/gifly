@@ -19,6 +19,7 @@ function initializeDrag(event) {
   const tabsBelow = listedTabs.slice(tabIndex + 1);
   draggedTab.setPointerCapture(event.pointerId);
   draggedTab.classList.add("tab-list-item--draggable");
+  draggedTab.classList.remove("tab-list-item--held-down");
   listedTabs
     .filter(t => t.id != draggedTab.id)
     .forEach(t => {

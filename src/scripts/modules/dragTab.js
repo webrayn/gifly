@@ -3,7 +3,13 @@
 function dragTab(options = {}) {
   const { distance = 0, speed = 0 } = options;
   const dragState = this.dragState;
-  if (dragState.active) {
+
+  if (dragState) {
+    // it's possible that scrolltop was updated while tab was already being dragged, when user scrolled via mouse wheel. So we have to get it on every mouse move.
+    dragState.tabListScrollTop = +dragState.tabListContainer.style.getPropertyValue(
+      "--scrolltop"
+    );
+    // change position of the dragged tab
     dragState.draggedTab.style.setProperty("--y-offset", distance + "px");
     dragState.tabsAbove.forEach(tab => {
       const totalDifference =

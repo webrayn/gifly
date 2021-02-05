@@ -56,7 +56,7 @@ function onTabDragEnd(event) {
     });
   }
 
-  dragState = null;
+  this.dragState = null;
 }
 
 module.exports = onTabDragEnd;

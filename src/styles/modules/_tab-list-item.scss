@@ -1,4 +1,5 @@
 .tab-list-item {
+  user-select: none; 
   position: relative;
   display: flex;
   align-items: stretch;
@@ -32,21 +33,41 @@
     margin-bottom: 0;
   }
 
+  &:hover {
+    background: #DDD;
+    // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
+    transition: background-color 100ms ease-in-out, transform 60ms ease-out, opacity 140ms ease-in-out;
+  }
+
+  &--hidden {
+    opacity: 0;
+    // margin-top: -46px;
+    // transition: opacity 200ms ease-out, visibility 0ms 200ms, margin 0ms 200ms;
+    transition: opacity 200ms ease-out, visibility 0ms 200ms;
+    visibility: hidden;
+    // display: none;
+  }
+
   &--held-down {
     transform: scale(0.99);
     transition: background-color 1400ms ease-in-out, transform 60ms ease-out, opacity 1400ms ease-out;
   }
 
   &--active {
-    
-    background: orange;
 
-  }
+    overflow:visible;
 
-  &:hover {
-    background: #DDD;
-    // transition: background-color 140ms ease-in-out, opacity 140ms ease-out;
-    transition: background-color 1400ms ease-in-out, transform 60ms ease-out, opacity 1400ms ease-out;
+    &::before {
+      content: "";
+      width: 2rem;
+      position: absolute;
+      right: calc(100% + 3px);
+      // border-radius: 0 var(--lesser-padding) var(--lesser-padding) 0;
+      top: 0;
+      height: 100%;
+      background: orange;
+    }
+
   }
 
   &__tab-button {

@@ -28,16 +28,24 @@
     text-indent: var(--block-height);
     white-space: nowrap;
     margin-left: var(--lesser-padding);
-    transition: background-color 140ms ease-in-out;
+    transition: background-color 80ms ease-out;
 
     &:hover {
       background: var(--color-two);
+      // background: rgba(119, 119, 140, 0.5);
+      // background: radial-gradient(circle at 50% 100%, rgba(108, 109, 127, 0.5), transparent 100%), rgba(38, 38, 44, 0.5);
     }
 
     &:active {
       & > .header__icon {
         transform: translateY(0.1rem);
       }
+
+      // background-image: linear-gradient(rgba(38, 38, 44, 0.5), transparent 50%);
+      // background-image: linear-gradient(rgba(38, 38, 44, 0.5), transparent 50%);
+      background: transparent;
+      // background: radial-gradient(circle at 50% 120%, var(--color-one), rgba(38, 38, 44, 0.5) 120%);
+      transition: background-color 50ms ease-out
     }
 
     &--disabled {

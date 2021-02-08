@@ -3,6 +3,7 @@ const createTabComponent = require("./modules/createTabComponent");
 const renderTabComponent = require("./modules/renderTabComponent");
 const initializeDrag = require("./modules/initializeDrag");
 const scroll = require("./modules/scroll");
+const filter = require("./modules/filter");
 
 // before closing browser, call localStorage.removeItem(key) for all the titles, removing everything
 
@@ -59,7 +60,8 @@ const state = {
   addTab(tab) {
     this.tabs[`tab-${tab.id}`] = {
       index: tab.index,
-      url: tab.url
+      url: tab.url,
+      title: tab.title
     };
     // if tab's url isn't already listed
     if (!this.tabURLs[tab.url]) {
@@ -109,7 +111,7 @@ const state = {
       // tabsList.classList.add("tab-list--deleting");
       tabsListItem.remove();
       util.adjustBodyPadding();
-      util.adjustScrollbarHeight();
+      util.adjustScrollbar();
       setTimeout(() => tabsList.classList.remove("tab-list--deleting"), 1400);
       this.scrolltop -= 40;
     }, 1400);
@@ -138,7 +140,7 @@ chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, function (
   // const tabsList = document.getElementById("tabs-list");
   // tabs.forEach(tab => state.addTab(tab.url));
   tabs.forEach(tab => state.addTab(tab));
-  util.adjustScrollbarHeight();
+  util.adjustScrollbar();
   state.renderedTabs = util.getListedTabs();
 });
 
@@ -185,3 +187,11 @@ document.addEventListener("pointerdown", e => {
     };
   }
 });
+
+document.addEventListener("contextmenu", e => {
+  if (e.target.classList.contains("tab-list-item__tab-button")) {
+    e.target.parentElement.classList.remove("tab-list-item--held-down");
+  }
+});
+
+document.addEventListener("keyup", filter.bind(state));

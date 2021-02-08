@@ -40,13 +40,42 @@ function calculateScrollbarHeight() {
   return scrollbarHeight;
 }
 
-function adjustScrollbarHeight() {
-  const scrollbarThumb = document.getElementById("scrollbar-thumb");
+function adjustScrollbar() {
+  // determine if scrollbar is needed, and if it's not then remove it
+  const container = document.getElementById("tab-list-container");
+  const margin = 6;
+  const visibleContentHeight = container.offsetHeight - margin; // 500
+  const wholeContentHeight = container.scrollHeight - margin;
+  const hiddenContentHeight = wholeContentHeight - visibleContentHeight;
+  const containerToContentRatio = visibleContentHeight / wholeContentHeight;
+  if (containerToContentRatio != 1) {
+    container.children[0].classList.add("tab-list--scrollable");
+  } else {
+    container.children[0].classList.remove("tab-list--scrollable");
+  }
 
-  scrollbarThumb.style.setProperty(
-    "--thumb-height",
-    calculateScrollbarHeight() + "px"
+  // const content = container.children[0];
+
+  const scrollbarThumb = document.getElementById("scrollbar-thumb");
+  const scrollbarHeight = calculateScrollbarHeight();
+
+  const containerScrollTop = Number.parseFloat(
+    container.style.getPropertyValue("--scrolltop") || 0
   );
+
+  // this value doesn't change no matter where thumb is. Max offset is always the same.
+  const maxScrollbarThumbOffset = hiddenContentHeight * containerToContentRatio;
+  const currentThumbOffset = containerScrollTop * containerToContentRatio;
+
+  if (currentThumbOffset > maxScrollbarThumbOffset) {
+    const newScrollbarThumbOffset = maxScrollbarThumbOffset;
+    scrollbarThumb.style.setProperty(
+      "--thumb-offset",
+      Math.min(newScrollbarThumbOffset, maxScrollbarThumbOffset) + "px"
+    );
+  }
+
+  scrollbarThumb.style.setProperty("--thumb-height", scrollbarHeight + "px");
 }
 
 function calculateScrollSpeed() { }
@@ -65,7 +94,7 @@ module.exports = {
   adjustBodyPadding,
   addNewColor,
   getListedTabs,
-  adjustScrollbarHeight,
+  adjustScrollbar,
   calculateScrollbarHeight,
   scroll,
   dragTab

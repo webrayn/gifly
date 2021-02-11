@@ -4,6 +4,7 @@ const renderTabComponent = require("./modules/renderTabComponent");
 const initializeDrag = require("./modules/initializeDrag");
 const scroll = require("./modules/scroll");
 const filter = require("./modules/filter");
+const onScroll = require("./modules/onScroll");
 
 // before closing browser, call localStorage.removeItem(key) for all the titles, removing everything
 
@@ -170,12 +171,13 @@ document.addEventListener("click", e => {
 
 const tabListContainer = document.getElementById("tab-list-container");
 
-tabListContainer.addEventListener("scroll", e => {
-  const scrollTop = e.target.scrollTop;
-  const scrollOptions = { distance: scrollTop, scrollBarOnly: true };
-  scroll.call(state, scrollOptions);
-  e.target.style.setProperty("--scrolltop", e.target.scrollTop);
-});
+// tabListContainer.addEventListener("scroll", e => {
+//   const scrollTop = e.target.scrollTop;
+//   const scrollOptions = { distance: scrollTop, scrollBarOnly: true };
+//   scroll.call(state, scrollOptions);
+//   e.target.style.setProperty("--scrolltop", e.target.scrollTop);
+// });
+tabListContainer.addEventListener("scroll", onScroll.bind(state));
 
 document.addEventListener("pointerdown", e => {
   if (e.target.classList.contains("tab-list-item__tab-button")) {

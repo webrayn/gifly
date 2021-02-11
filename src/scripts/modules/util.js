@@ -48,10 +48,13 @@ function adjustScrollbar() {
   const wholeContentHeight = container.scrollHeight - margin;
   const hiddenContentHeight = wholeContentHeight - visibleContentHeight;
   const containerToContentRatio = visibleContentHeight / wholeContentHeight;
+  const scrollbarTrack = document.getElementById("scrollbar-track");
   if (containerToContentRatio != 1) {
     container.children[0].classList.add("tab-list--scrollable");
+    scrollbarTrack.classList.remove("scrollbar-track--hidden");
   } else {
     container.children[0].classList.remove("tab-list--scrollable");
+    scrollbarTrack.classList.add("scrollbar-track--hidden");
   }
 
   // const content = container.children[0];

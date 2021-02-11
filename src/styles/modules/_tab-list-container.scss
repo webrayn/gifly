@@ -3,24 +3,12 @@
 
 .tab-list-container {
   --scrolltop: 0;
-  // display: flex;
-  // flex-wrap: nowrap;
-  // align-items: stretch;
-  // justify-items: center;
-  // background: purple;
   position: relative;
-  // top: var(--header-height);
-  width: 38rem;
-  // width: 100%;
+  width: 40rem;
   max-height: 506px;
-  // height: max-content;
-  // height: 506px;
-  // overflow-x: hidden;
   overflow-y: scroll;
-  // overflow-y: hidden;
   padding: 0;
   margin: 0;
-  // scroll-behavior: smooth;
 
   // &--scroll {
   //   padding-right: 0;

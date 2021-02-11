@@ -28,6 +28,8 @@ function onTabDrag(event) {
 
   const distanceToDrag = Math.min(yOffset, dragState.maxTabOffsetBelow);
 
+  // console.log(` scrollTop: ${dragState.tabListScrollTop}`);
+
   // change dragged tab's position
   dragTab.call(this, { distance: distanceToDrag });
 }

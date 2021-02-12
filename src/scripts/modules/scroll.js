@@ -5,16 +5,6 @@ const dragTab = require("./dragTab");
 function scroll(options = {}) {
   const { distance = 0, scrollBarOnly = false, speed = 0 } = options;
   const dragState = this.dragState;
-  // if (dragState) {
-  //   dragTab.call(this, { distance });
-  //   // const yOffset =
-  //   //   dragState.draggedTabPosition -
-  //   //   dragState.originalTabPositions[dragState.draggedTab.id] +
-  //   //   dragState.tabListScrollTop;
-
-  //   // const distanceToDrag = Math.min(yOffset, dragState.maxTabOffsetBelow);
-  //   // dragTab.call(this, { distance: distanceToDrag });
-  // }
   const container = document.getElementById("tab-list-container");
   const content = container.children[0];
   const margin = 6;
@@ -25,9 +15,8 @@ function scroll(options = {}) {
   // const contentOffsetHeight = content.offsetHeight;
   const scrollbarThumb = document.getElementById("scrollbar-thumb");
 
-  const containerScrollTop = Number.parseFloat(
-    container.style.getPropertyValue("--scrolltop") || 0
-  );
+  const containerScrollTop = this.scrollTop;
+  console.log(containerScrollTop);
 
   const containerToContentRatio = visibleContentHeight / wholeContentHeight;
 

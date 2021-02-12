@@ -6,14 +6,16 @@ const getListedTabs = require("./util").getListedTabs;
 // this function declares and initializes the variables needed for handling all aspects of dragging a tab
 function initializeDrag(event) {
   const tabListContainer = document.getElementById("tab-list-container");
-  const tabListScrollTop = tabListContainer.scrollTop;
+  const tabListScrollTop = this.scrollTop;
   const tabList = document.getElementById("tab-list");
   const tabListHeight = tabList.offsetHeight;
   const margin = 6;
-  tabListContainer.style.setProperty("--scrolltop", tabListScrollTop);
+  // tabListContainer.style.setProperty("--scrolltop", tabListScrollTop);
   const listedTabs = getListedTabs();
   const headerHeight = document.getElementById("header").offsetHeight;
   const draggedTab = event.target.parentElement;
+  const shiftY = event.clientY - draggedTab.getBoundingClientRect().top;
+  const draggedTabPosition = event.pageY - shiftY;
   const tabIndex = listedTabs.findIndex(t => t.id === draggedTab.id);
   const tabsAbove = listedTabs.slice(0, tabIndex);
   const tabsBelow = listedTabs.slice(tabIndex + 1);
@@ -34,7 +36,7 @@ function initializeDrag(event) {
     active: true,
     draggedTab,
     pointerPosition: 0,
-    draggedTabPosition: 0,
+    draggedTabPosition,
     headerHeight,
     tabList,
     tabListHeight,
@@ -42,7 +44,7 @@ function initializeDrag(event) {
     tabListScrollTop,
     margin,
     tabHeight: 40,
-    shiftY: event.clientY - draggedTab.getBoundingClientRect().top,
+    shiftY,
     listedTabs,
     tabIndex,
     tabsAbove,

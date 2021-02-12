@@ -97,7 +97,7 @@ const state = {
   },
   deleteTab(id) {
     const tabListContainer = document.getElementById("tab-list-container");
-    this.scrolltop = tabListContainer.scrollTop;
+    this.scrollTop = tabListContainer.scrollTop;
     const tabUrl = this.tabs[id].url;
     // remove ID of deleted tab from the list of ids associated with tab URL
     this.tabURLs[tabUrl].ids = this.tabURLs[tabUrl].ids.filter(
@@ -114,7 +114,7 @@ const state = {
       util.adjustBodyPadding();
       util.adjustScrollbar();
       setTimeout(() => tabsList.classList.remove("tab-list--deleting"), 1400);
-      this.scrolltop -= 40;
+      this.scrollTop -= 40;
     }, 1400);
     // if there are no more tabs with this title, tab object can be removed
     if (this.tabURLs[tabUrl].ids.length == 0) {
@@ -130,7 +130,7 @@ const state = {
   renderedTabs: [],
   dragState: null,
   dragTimer: null,
-  scrolltop: null
+  scrollTop: 0
 };
 
 // render tabs
@@ -171,12 +171,6 @@ document.addEventListener("click", e => {
 
 const tabListContainer = document.getElementById("tab-list-container");
 
-// tabListContainer.addEventListener("scroll", e => {
-//   const scrollTop = e.target.scrollTop;
-//   const scrollOptions = { distance: scrollTop, scrollBarOnly: true };
-//   scroll.call(state, scrollOptions);
-//   e.target.style.setProperty("--scrolltop", e.target.scrollTop);
-// });
 tabListContainer.addEventListener("scroll", onScroll.bind(state));
 
 document.addEventListener("pointerdown", e => {

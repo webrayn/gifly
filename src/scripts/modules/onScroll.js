@@ -7,24 +7,18 @@ function onScroll(e) {
   const container = e.target;
   const scrollTop = container.scrollTop;
   const scrollOptions = { distance: scrollTop, scrollBarOnly: true };
+  // update scrolltop in state so that other functions get the latest value without having to use elem.scrollTop and forcing reflow
+  this.scrollTop = scrollTop;
 
   // check if a tab is being dragged right now
-  // if so, update the ScrollTop variable inside the dragState object
-  // to make sure other functions have the most updated value
-  const dragState = this.dragState;
-  if (dragState) {
-    dragState.tabListScrollTop = scrollTop;
+  // if so, drag the tab to keep up with the changing scrolltop
+  if (this.dragState) {
+    // state.dragState.scrollTop = scrollTop;
     dragTab.call(this, { distance: scrollTop });
-    // const yOffset =
-    //   dragState.draggedTabPosition -
-    //   dragState.originalTabPositions[dragState.draggedTab.id] +
-    //   dragState.tabListScrollTop;
-    // const distanceToDrag = Math.min(yOffset, dragState.maxTabOffsetBelow);
-    // dragTab.call(this, { distance: distanceToDrag });
   }
 
   scroll.call(this, scrollOptions);
-  container.style.setProperty("--scrolltop", e.target.scrollTop);
+  // container.style.setProperty("--scrolltop", e.target.scrollTop);
 }
 
 module.exports = onScroll;

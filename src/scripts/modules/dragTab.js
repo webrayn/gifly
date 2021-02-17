@@ -7,6 +7,7 @@ function dragTab(options = {}) {
   if (dragState) {
     // change position of the dragged tab
     dragState.draggedTab.style.setProperty("--y-offset", distance + "px");
+
     dragState.tabsAbove.forEach(tab => {
       const totalDifference =
         dragState.originalTabPositions[tab.id] -

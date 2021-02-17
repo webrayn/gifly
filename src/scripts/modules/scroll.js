@@ -4,7 +4,6 @@ const dragTab = require("./dragTab");
 
 function scroll(options = {}) {
   const { distance = 0, scrollBarOnly = false, speed = 0 } = options;
-  const dragState = this.dragState;
   const container = document.getElementById("tab-list-container");
   const content = container.children[0];
   const margin = 6;
@@ -16,36 +15,45 @@ function scroll(options = {}) {
   const scrollbarThumb = document.getElementById("scrollbar-thumb");
 
   const containerScrollTop = this.scrollTop;
-  console.log(containerScrollTop);
-
   const containerToContentRatio = visibleContentHeight / wholeContentHeight;
 
   // this value doesn't change no matter where thumb is. Max offset is always the same.
-  const maxScrollbarThumbOffset = hiddenContentHeight * containerToContentRatio;
+  const maxScrollbarThumbOffset = this.maxScrollbarThumbOffset;
   const currentThumbOffset = containerScrollTop * containerToContentRatio;
 
-  if (currentThumbOffset < maxScrollbarThumbOffset) {
-    const newScrollbarThumbOffset = distance * containerToContentRatio;
-    scrollbarThumb.style.setProperty(
-      "--thumb-offset",
-      Math.min(newScrollbarThumbOffset, maxScrollbarThumbOffset) + "px"
-    );
-  }
+  // if (containerScrollTop == 460) {
+  //   console.log(`currentThumbOffset: ${currentThumbOffset}`);
+  // }
 
-  // only offset tabList if scrlling using drag
+  // if (currentThumbOffset <= maxScrollbarThumbOffset) {
+  const newScrollbarThumbOffset = distance * containerToContentRatio;
+  scrollbarThumb.style.setProperty(
+    "--thumb-offset",
+    Math.min(newScrollbarThumbOffset, maxScrollbarThumbOffset) + "px"
+  );
+  // }
+
+  // only offset tabList if scrolling using drag
   if (scrollBarOnly == false) {
+    const maxOffset = this.dragState.tabListHeight - 506;
+    this.dragState.tabList.style.setProperty("--scroll-speed", 8000 + "ms");
+    this.dragState.tabList.style.setProperty(
+      "--y-offset",
+      maxOffset * -1 + "px"
+    );
+    // this.dragState.tabList.classList.add("tab-list--scroll");
     content.classList.add("tab-list--scroll");
-    const availableScrollDistance = hiddenContentHeight;
+    // const availableScrollDistance = hiddenContentHeight;
 
-    if (containerScrollTop < availableScrollDistance) {
-      const maxOffset = (hiddenContentHeight - containerScrollTop) * -1;
-      const newOffset = distance * -1;
+    // if (containerScrollTop < availableScrollDistance) {
+    //   const maxOffset = (hiddenContentHeight - containerScrollTop) * -1;
+    //   const newOffset = distance * -1;
 
-      content.style.setProperty(
-        "--y-offset",
-        Math.max(newOffset, maxOffset) + "px"
-      );
-    }
+    //   content.style.setProperty(
+    //     "--y-offset",
+    //     Math.max(newOffset, maxOffset) + "px"
+    //   );
+    // }
   }
 }
 

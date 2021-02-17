@@ -13,6 +13,7 @@
   --duplicate-indicator-color: none;
   // --y-pos: null;
   --y-offset: 0;
+  --offset-speed: 0;
   --active-indicator-space: calc(var(--greater-padding) + var(--lesser-padding));
   --opacity: 1;
   // --scale: 1;
@@ -23,9 +24,9 @@
   --float-y-to: 0;
   // transform: translateY(0);
   // transform: translateY(var(--y-offset));
-  // transition: background-color 1400ms ease-in-out, transform 1400ms ease-in-out, opacity 1400ms ease-out;
+  // transition: background-color 1400ms ease-in-out, transform 6000ms ease-in-out, opacity 1400ms ease-out;
   // transition: background-color 1400ms ease-in-out, transform 0ms, opacity 1400ms ease-out;
-  transition: none;
+  // transition: none;
   touch-action: none;
   overflow: hidden;
 
@@ -43,9 +44,14 @@
     opacity: 0;
     // margin-top: -46px;
     // transition: opacity 200ms ease-out, visibility 0ms 200ms, margin 0ms 200ms;
-    transition: opacity 200ms ease-out, visibility 0ms 200ms;
+    transition: opacity 2000ms ease-out, visibility 0ms 2000ms;
     visibility: hidden;
     // display: none;
+  }
+
+  &--filtered {
+    transform: translateY(var(--y-offset));
+    transition: transform var(--offset-speed) 2000ms ease-out;
   }
 
   &--held-down {
@@ -149,11 +155,36 @@
     cursor: grabbing;
     transform: translateY(var(--y-offset)) scale(1.01);
     // transition: transform 30ms ease-in-out;
-    transition: transform 0ms ease-in-out;
+    transition: transform 0 ease-in-out;
+    // transition: transform 8000ms ease-in-out;
 
     &:hover {
       // transition: transform 30ms ease-in-out;
-      transition: transform 0ms ease-in-out;
+      transition: transform 0 ease-in-out;
+      background: white;
+    }
+
+    & .tab-list-item__tab-button {
+      cursor: grabbing;
+    }
+
+    // & ~ li {
+    //   transform: translateY(calc(100% + var(--lesser-padding)));
+    //   transition: none;
+    // }
+  }
+
+  &--scroll-drag {
+    // z-index: 1000;
+    cursor: grabbing;
+    transform: translateY(var(--y-offset)) scale(1.01);
+    // transition: transform 30ms ease-in-out;
+    transition: transform var(--scroll-drag-speed) ease-in-out;
+    // transition: transform 8000ms ease-in-out;
+
+    &:hover {
+      // transition: transform 30ms ease-in-out;
+      transition: transform var(--scroll-drag-speed) ease-in-out;
       background: white;
     }
 

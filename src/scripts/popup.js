@@ -112,7 +112,7 @@ const state = {
       // tabsList.classList.add("tab-list--deleting");
       tabsListItem.remove();
       util.adjustBodyPadding();
-      util.adjustScrollbar();
+      util.adjustScrollbar.call(this);
       setTimeout(() => tabsList.classList.remove("tab-list--deleting"), 1400);
       this.scrollTop -= 40;
     }, 1400);
@@ -130,7 +130,8 @@ const state = {
   renderedTabs: [],
   dragState: null,
   dragTimer: null,
-  scrollTop: 0
+  scrollTop: 0,
+  maxScrollbarThumbOffset: 0
 };
 
 // render tabs
@@ -141,7 +142,7 @@ chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, function (
   // const tabsList = document.getElementById("tabs-list");
   // tabs.forEach(tab => state.addTab(tab.url));
   tabs.forEach(tab => state.addTab(tab));
-  util.adjustScrollbar();
+  util.adjustScrollbar.call(state);
   state.renderedTabs = util.getListedTabs();
 });
 

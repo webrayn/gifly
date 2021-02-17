@@ -45,6 +45,7 @@
       // background-image: linear-gradient(rgba(38, 38, 44, 0.5), transparent 50%);
       // background-image: linear-gradient(rgba(38, 38, 44, 0.5), transparent 50%);
       background: transparent;
+      box-shadow: inset 0 0 0 2.56px lime;
       // background: radial-gradient(circle at 50% 120%, var(--color-one), rgba(38, 38, 44, 0.5) 120%);
       transition: background-color 30ms ease-out
     }
@@ -58,7 +59,7 @@
       }
 
       & path {
-        stroke: #636374;
+        stroke: var(--color-two);
       }
     }
   }

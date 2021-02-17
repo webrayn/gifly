@@ -40,6 +40,7 @@ function calculateScrollbarHeight() {
   return scrollbarHeight;
 }
 
+// this will be called when tabs are first rendered, when a tab is deleted, and when tabs are filtered
 function adjustScrollbar() {
   // determine if scrollbar is needed, and if it's not then remove it
   const container = document.getElementById("tab-list-container");
@@ -53,8 +54,8 @@ function adjustScrollbar() {
     container.children[0].classList.add("tab-list--scrollable");
     scrollbarTrack.classList.remove("scrollbar-track--hidden");
   } else {
-    container.children[0].classList.remove("tab-list--scrollable");
-    scrollbarTrack.classList.add("scrollbar-track--hidden");
+    // container.children[0].classList.remove("tab-list--scrollable");
+    // scrollbarTrack.classList.add("scrollbar-track--hidden");
   }
 
   // const content = container.children[0];
@@ -67,14 +68,14 @@ function adjustScrollbar() {
   );
 
   // this value doesn't change no matter where thumb is. Max offset is always the same.
-  const maxScrollbarThumbOffset = hiddenContentHeight * containerToContentRatio;
+  this.maxScrollbarThumbOffset = hiddenContentHeight * containerToContentRatio;
   const currentThumbOffset = containerScrollTop * containerToContentRatio;
 
-  if (currentThumbOffset > maxScrollbarThumbOffset) {
-    const newScrollbarThumbOffset = maxScrollbarThumbOffset;
+  if (currentThumbOffset > this.maxScrollbarThumbOffset) {
+    const newScrollbarThumbOffset = this.maxScrollbarThumbOffset;
     scrollbarThumb.style.setProperty(
       "--thumb-offset",
-      Math.min(newScrollbarThumbOffset, maxScrollbarThumbOffset) + "px"
+      Math.min(newScrollbarThumbOffset, this.maxScrollbarThumbOffset) + "px"
     );
   }
 

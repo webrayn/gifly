@@ -33,7 +33,7 @@ function initializeDrag(event) {
   }, {});
 
   this.dragState = {
-    active: true,
+    scroll: false,
     draggedTab,
     pointerPosition: 0,
     draggedTabPosition,
@@ -50,6 +50,7 @@ function initializeDrag(event) {
     tabsAbove,
     tabsBelow,
     originalTabPositions,
+    maxTabOffsetAbove: headerHeight - originalTabPositions[draggedTab.id],
     maxTabOffsetBelow:
       tabListHeight -
       margin +
@@ -57,7 +58,21 @@ function initializeDrag(event) {
       draggedTab.offsetHeight -
       originalTabPositions[draggedTab.id],
     shouldScroll() {
-      return this.draggedTabPosition > 426;
+      if (this.draggedTabPosition < 184) {
+        return "up";
+      } else if (this.draggedTabPosition > 420) {
+        return "down";
+      } else return false;
+    },
+    getScrollSpeed() {
+      const difference = this.draggedTabPosition - 426;
+      if (difference < 10) {
+        return "1000ms";
+      } else if (difference < 30) {
+        return "600ms";
+      } else {
+        return "200ms";
+      }
     }
   };
 

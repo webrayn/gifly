@@ -33,6 +33,7 @@ function initializeDrag(event) {
   }, {});
 
   this.dragState = {
+    animation: null,
     scroll: false,
     draggedTab,
     pointerPosition: 0,

@@ -16,7 +16,7 @@
   &--scroll {
     // use max available space for offset (totalContent - visibleContent (506))
     transform: translateY(var(--y-offset));
-    transition: transform var(--scroll-drag-speed) ease-in-out;
+    transition: transform var(--scroll-drag-speed) linear;
   }
 
   // &--deleting {

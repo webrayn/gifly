@@ -35,25 +35,19 @@ function scroll(options = {}) {
 
   // only offset tabList if scrolling using drag
   if (scrollBarOnly == false) {
-    const maxOffset = this.dragState.tabListHeight - 506;
-    this.dragState.tabList.style.setProperty("--scroll-speed", 8000 + "ms");
-    this.dragState.tabList.style.setProperty(
-      "--y-offset",
-      maxOffset * -1 + "px"
-    );
-    // this.dragState.tabList.classList.add("tab-list--scroll");
+    // const maxOffset = this.dragState.tabListHeight - 506;
     content.classList.add("tab-list--scroll");
-    // const availableScrollDistance = hiddenContentHeight;
+    const availableScrollDistance = hiddenContentHeight;
 
-    // if (containerScrollTop < availableScrollDistance) {
-    //   const maxOffset = (hiddenContentHeight - containerScrollTop) * -1;
-    //   const newOffset = distance * -1;
+    if (containerScrollTop < availableScrollDistance) {
+      const maxOffset = (hiddenContentHeight - containerScrollTop) * -1;
+      const newOffset = distance * -1;
 
-    //   content.style.setProperty(
-    //     "--y-offset",
-    //     Math.max(newOffset, maxOffset) + "px"
-    //   );
-    // }
+      content.style.setProperty(
+        "--y-offset",
+        Math.max(newOffset, maxOffset) + "px"
+      );
+    }
   }
 }
 

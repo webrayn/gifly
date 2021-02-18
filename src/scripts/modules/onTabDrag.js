@@ -16,42 +16,43 @@ function onTabDrag(event) {
   // }
 
   if (dragState.shouldScroll() == "down") {
+    // console.log("should drag down");
+    const maxTabListOffset = dragState.tabListHeight - 506;
+    scroll.call(this, { distance: maxTabListOffset });
+
     const step = () => {
-      if (dragState.shouldScroll()) {
-        // const originalListScrolltop = dragState.tabListScrollTop;
-        // const listPos = dragState.tabList.getBoundingClientRect().top;
-        // const yOffset =
-        //   dragState.draggedTabPosition -
-        //   dragState.originalTabPositions[dragState.draggedTab.id] +
-        //   dragState.tabListScrollTop;
-        // const distanceToDrag = Math.max(
-        //   dragState.maxTabOffsetAbove,
-        //   Math.min(yOffset, dragState.maxTabOffsetBelow)
-        // );
-        // dragTab.call(this, { distance: distanceToDrag });
-        // window.requestAnimationFrame(step);
-        const maxOffset = dragState.tabListHeight - 506;
-        scroll.call(this, { distance: maxOffset });
+      if (dragState.shouldScroll() == "down") {
+        const tabListPos = dragState.tabList.getBoundingClientRect().top - 52;
+        // must distinguish between pointerPosition and actual tab position
+        dragState.draggedTabPosition =
+          event.pageY - dragState.shiftY - tabListPos;
+        const yOffset =
+          dragState.draggedTabPosition -
+          dragState.originalTabPositions[dragState.draggedTab.id] +
+          dragState.tabListScrollTop;
+        dragTab.call(this, { distance: yOffset });
+        window.requestAnimationFrame(step);
       } else {
         dragState.tabList.classList.remove("tab-list--scroll");
       }
     };
+    if (dragState.animation == null) {
+      dragState.animation = window.requestAnimationFrame(step);
+    }
+  } else {
+    const yOffset =
+      dragState.draggedTabPosition -
+      dragState.originalTabPositions[dragState.draggedTab.id] +
+      dragState.tabListScrollTop;
 
-    window.requestAnimationFrame(step);
+    const distanceToDrag = Math.max(
+      dragState.maxTabOffsetAbove,
+      Math.min(yOffset, dragState.maxTabOffsetBelow)
+    );
+
+    // change dragged tab's position
+    dragTab.call(this, { distance: distanceToDrag });
   }
-
-  const yOffset =
-    dragState.draggedTabPosition -
-    dragState.originalTabPositions[dragState.draggedTab.id] +
-    dragState.tabListScrollTop;
-
-  const distanceToDrag = Math.max(
-    dragState.maxTabOffsetAbove,
-    Math.min(yOffset, dragState.maxTabOffsetBelow)
-  );
-
-  // change dragged tab's position
-  dragTab.call(this, { distance: distanceToDrag });
 }
 
 module.exports = onTabDrag;

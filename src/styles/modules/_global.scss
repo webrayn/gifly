@@ -9,8 +9,9 @@
   // outline-color: gold;
   outline: none;
   box-shadow: inset 0 0 0 2px lime;
+  // box-shadow: inset 0 0 0 1px var(--color-one);
   // box-shadow: inset 0 0 0 2px orange;
-  // border: 2px solid red;
+  // border: 3px solid lime;
   // box-shadow: inset 0 0 0 0.1rem #de21ff;
   // box-shadow: inset 0 0 0 0.1rem #b7ff00;
   // transition: box-shadow 100ms ease-in-out;
@@ -33,7 +34,8 @@
   // --color-two: #57576B;
   // --color-two: #50595E;
   // --color-two: #596369;
-  --color-two: #586374;
+  // --color-two: #586374;
+  --color-two: #5C687A;
   --golden-ratio: 1.61803398875;
   --greater-padding: 0.5rem;
   --lesser-padding: 0.3rem;

@@ -131,7 +131,9 @@ const state = {
   dragState: null,
   dragTimer: null,
   scrollTop: 0,
-  maxScrollbarThumbOffset: 0
+  maxScrollbarThumbOffset: 0,
+  filteredOutTabs: 0,
+  filterIsActive: false
 };
 
 // render tabs
@@ -191,4 +193,9 @@ document.addEventListener("contextmenu", e => {
   }
 });
 
-document.addEventListener("keyup", filter.bind(state));
+document.addEventListener("keyup", e => {
+  if (e.key != "Tab") {
+    filter.call(state);
+  }
+  // console.log(e.key);
+});

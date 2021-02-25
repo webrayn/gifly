@@ -14,7 +14,7 @@
   // --y-pos: null;
   --y-offset: 0;
   --offset-speed: 0;
-  --active-indicator-space: calc(var(--greater-padding) + var(--lesser-padding));
+  // --active-indicator-space: calc(var(--greater-padding) + var(--lesser-padding));
   --opacity: 1;
   // --scale: 1;
   --scale: 0.99;
@@ -26,13 +26,15 @@
   // transform: translateY(var(--y-offset));
   // transition: background-color 1400ms ease-in-out, transform 6000ms ease-in-out, opacity 1400ms ease-out;
   // transition: background-color 1400ms ease-in-out, transform 0ms, opacity 1400ms ease-out;
+  visibility: visible;
+  // transition: opacity 1000ms ease-in, visibility 0ms 1000ms;
   // transition: none;
   touch-action: none;
   overflow: hidden;
 
-  &:last-child {
-    margin-bottom: 0;
-  }
+  // &:last-child {
+  //   margin-bottom: 0;
+  // }
 
   &:hover {
     background: #DDD;
@@ -44,19 +46,20 @@
     opacity: 0;
     // margin-top: -46px;
     // transition: opacity 200ms ease-out, visibility 0ms 200ms, margin 0ms 200ms;
-    transition: opacity 2000ms ease-out, visibility 0ms 2000ms;
-    visibility: hidden;
-    // display: none;
+    transition: opacity 1000ms ease-in-out, display 0 1000ms;
+    display: none;
   }
 
   &--filtered {
-    transform: translateY(var(--y-offset));
-    transition: transform var(--offset-speed) 2000ms ease-out;
+    visibility: visible;
+    animation: filteredIn 6000ms ease-out;
+    // transform: translateY(var(--y-offset));
+    // transition: transform 0 ease-in-out, opacity 1000ms ease-in;
   }
 
   &--held-down {
     transform: scale(0.99);
-    transition: background-color 1400ms ease-in-out, transform 60ms ease-out, opacity 1400ms ease-out;
+    transition: background-color 1400ms ease-in-out, transform 60ms ease-in-out, opacity 1400ms ease-out;
   }
 
   &--active {
@@ -71,7 +74,8 @@
       // border-radius: 0 var(--lesser-padding) var(--lesser-padding) 0;
       top: 0;
       height: 100%;
-      background: orange;
+      // background: orange;
+      background: lime;
     }
 
   }
@@ -264,19 +268,17 @@
 }
 
 
-// @keyframes float {
+@keyframes filteredIn {
 
-//   0% {
-//     // transform: translateX(6px);
-//     transform: translate(var(--float-x-from), var(--float-y-from));
-//   }
+  0% {
+    transform: translateY(var(--y-offset));
+  }
 
-//   100% {
-//     // transform: translateX(6px);
-//     transform: translate(var(--float-x-to), var(--float-y-to));
-//   }
+  100% {
+    transform: translateY(0);
+  }
 
-// }
+}
 
 @keyframes float {
 

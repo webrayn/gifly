@@ -1,40 +1,71 @@
 "use strict";
 
+const util = require("./util");
+
 // function filter() {
 //   const input = document.getElementById("filter");
-//   const filter = input.value;
-//   const tabList = document.getElementById("tab-list");
-//   const listedTabs = [...document.getElementsByClassName("tab-list-item")];
-//   const filteredTabs = listedTabs.filter(tab => {
-//     const title = tab.children[3];
-//     return title.innerText.includes(filter);
-//   });
-//   const fragment = document.createDocumentFragment();
-//   filteredTabs.forEach(tab => fragment.appendChild(tab));
-//   while (tabList.firstChild) {
-//     tabList.removeChild(tabList.firstChild);
+//   const filter = input.value.toLowerCase();
+//   // ensure that tabList stays original height, but hide the scrollbar if appropriate
+//   if (filter != "") {
+//     util.adjustScrollbar();
+//   } else {
+//     // setTimeout(() => this.filterIsActive)
+//     this.filteredOutTabs = 0;
 //   }
-//   tabList.appendChild(fragment);
-//   // no need to remove dom elements, just hide them instead.
+//   const listedTabs = [...document.getElementsByClassName("tab-list-item")];
+//   listedTabs.forEach(tab => {
+//     const title = this.tabs[tab.id].title.toLowerCase();
+//     if (!title.includes(filter)) {
+//       tab.ariaHidden = "true";
+//       tab.classList.add("tab-list-item--hidden");
+//       // tab.classList.remove("tab-list-item--filtered");
+//       this.filteredOutTabs += 1;
+//     } else {
+//       tab.style.setProperty("--y-offset", this.filteredOutTabs * 46 + "px");
+//       tab.ariaHidden = "false";
+//       tab.classList.remove("tab-list-item--hidden");
+//       if (this.filteredOutTabs > 0) {
+//         this.filteredOutTabs -= 1;
+//       }
+//       tab.style.setProperty("--offset-speed", 1000 + "ms");
+//       tab.classList.add("tab-list-item--filtered");
+//     }
+//     // tab.style.setProperty("--y-offset", this.filteredOutTabs * 46 * -1 + "px");
+//   });
 // }
 function filter() {
   const input = document.getElementById("filter");
   const filter = input.value.toLowerCase();
+  // ensure that tabList stays original height, but hide the scrollbar if appropriate
+  document.getElementById("tab-list").classList.add("tab-list--filtered");
+  if (filter != "") {
+    util.adjustScrollbar();
+  } else {
+    // document.getElementById("tab-list").classList.remove("tab-list--filtered");
+    // setTimeout(() => this.filterIsActive)
+    this.filteredOutTabs = 0;
+  }
   const listedTabs = [...document.getElementsByClassName("tab-list-item")];
-  let hidden = 0;
-  listedTabs.forEach((tab, index) => {
-    // const title = tab.children[3].innerText.toLowerCase();
-    const title = this.tabs[tab.id].title.toLowerCase();
-    // console.log(`Tab index: ${index}, filter: ${filter}, title: ${title}`);
+
+  listedTabs.forEach(tab => {
+    tab.classList.remove("tab-list-item--filtered");
     tab.classList.remove("tab-list-item--hidden");
+    const title = this.tabs[tab.id].title.toLowerCase();
     if (!title.includes(filter)) {
+      tab.ariaHidden = "true";
       tab.classList.add("tab-list-item--hidden");
-      hidden += 1;
+      this.filteredOutTabs += 1;
     } else {
-      tab.style.setProperty("--y-offset", hidden * 46 * -1 + "px");
-      tab.style.setProperty("--offset-speed", 2000 + "ms");
+      tab.ariaHidden = "false";
+      tab.style.setProperty("--y-offset", this.filteredOutTabs * 46 + "px");
+      tab.classList.remove("tab-list-item--hidden");
+      // if (this.filteredOutTabs > 0) {
+      //   this.filteredOutTabs -= 1;
+      // }
+      tab.style.setProperty("--offset-speed", 1000 + "ms");
       tab.classList.add("tab-list-item--filtered");
     }
+    // tab.style.setProperty("--y-offset", this.filteredOutTabs * 46 * -1 + "px");
   });
 }
 

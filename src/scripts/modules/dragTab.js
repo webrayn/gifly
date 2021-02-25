@@ -5,8 +5,17 @@ function dragTab(options = {}) {
   const dragState = this.dragState;
 
   if (dragState) {
-    // change position of the dragged tab
-    dragState.draggedTab.style.setProperty("--y-offset", distance + "px");
+    // change position of the dragged tab, ensuring it doesn't exceed the max
+    const yOffset =
+      dragState.draggedTabPosition -
+      dragState.originalTabPositions[dragState.draggedTab.id] +
+      dragState.tabListScrollTop;
+
+    const distanceToDrag = Math.max(
+      dragState.maxTabOffsetAbove,
+      Math.min(yOffset, dragState.maxTabOffsetBelow)
+    );
+    dragState.draggedTab.style.setProperty("--y-offset", distanceToDrag + "px");
 
     dragState.tabsAbove.forEach(tab => {
       const totalDifference =

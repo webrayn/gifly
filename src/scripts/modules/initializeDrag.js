@@ -7,6 +7,8 @@ const getListedTabs = require("./util").getListedTabs;
 function initializeDrag(event) {
   const tabListContainer = document.getElementById("tab-list-container");
   const tabListScrollTop = this.scrollTop;
+  const maxScrollTop =
+    tabListContainer.scrollHeight - tabListContainer.offsetHeight;
   const tabList = document.getElementById("tab-list");
   const tabListHeight = tabList.offsetHeight;
   const margin = 6;
@@ -43,6 +45,9 @@ function initializeDrag(event) {
     tabListHeight,
     tabListContainer,
     tabListScrollTop,
+    maxScrollTop,
+    tabListOffset: 0,
+    maxTabListOffset: maxScrollTop * -1,
     margin,
     tabHeight: 40,
     shiftY,
@@ -59,9 +64,11 @@ function initializeDrag(event) {
       draggedTab.offsetHeight -
       originalTabPositions[draggedTab.id],
     shouldScroll() {
-      if (this.draggedTabPosition < 184) {
+      const tabTop = this.pointerPosition - this.shiftY;
+      const tabBottom = this.pointerPosition - this.shiftY + this.tabHeight;
+      if (tabTop < 184) {
         return "up";
-      } else if (this.draggedTabPosition > 420) {
+      } else if (tabBottom > 420) {
         return "down";
       } else return false;
     },

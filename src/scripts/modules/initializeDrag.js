@@ -47,7 +47,7 @@ function initializeDrag(event) {
     tabListScrollTop,
     maxScrollTop,
     tabListOffset: 0,
-    maxTabListOffset: maxScrollTop * -1,
+    maxTabListOffset: maxScrollTop,
     margin,
     tabHeight: 40,
     shiftY,
@@ -64,11 +64,15 @@ function initializeDrag(event) {
       draggedTab.offsetHeight -
       originalTabPositions[draggedTab.id],
     shouldScroll() {
-      const tabTop = this.pointerPosition - this.shiftY;
+      const draggedTapTop = this.pointerPosition - this.shiftY;
       const tabBottom = this.pointerPosition - this.shiftY + this.tabHeight;
-      if (tabTop < 184) {
+      if (draggedTapTop < 184) {
         return "up";
-      } else if (tabBottom > 420) {
+      } else if (
+        tabBottom > 420 &&
+        this.tabListOffset < this.maxTabListOffset &&
+        this.tabListScrollTop < this.maxScrollTop
+      ) {
         return "down";
       } else return false;
     },

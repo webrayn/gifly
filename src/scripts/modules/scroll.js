@@ -36,7 +36,7 @@ function scroll(options = {}) {
   // only offset tabList if scrolling using drag
   if (scrollBarOnly == false) {
     // this value is negative. equal to maxScrollTop * -1
-    const maxOffset = this.dragState.maxTabListOffset;
+    const maxOffset = this.dragState.maxTabListOffset * -1;
     content.classList.add("tab-list--scroll");
     // const availableScrollDownDistance = hiddenContentHeight;
 

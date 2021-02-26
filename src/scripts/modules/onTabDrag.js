@@ -125,8 +125,8 @@ function onTabDrag(event) {
         dragState.shouldScroll() == "down" &&
         dragState.tabListOffset < dragState.maxScrollTop
       ) {
-        dragState.draggedTabPosition += 1;
-        dragState.tabListOffset += 1;
+        dragState.draggedTabPosition += 2;
+        dragState.tabListOffset += 2;
         const yOffset =
           dragState.draggedTabPosition -
           dragState.originalTabPositions[dragState.draggedTab.id] +
@@ -137,10 +137,14 @@ function onTabDrag(event) {
       } else {
         dragState.tabList.classList.remove("tab-list--scroll");
         // change actual scrolltop here
-        console.log(`Scrolling to ${dragState.tabListOffset}`);
+        // console.log(
+        //   `dragState.tabListOffset: ${dragState.tabListOffset
+        //   }, dragState.draggedTabPosition: ${dragState.draggedTabPosition}`
+        // );
         dragState.tabListContainer.scroll(0, dragState.tabListOffset);
         dragState.tabListScrollTop = dragState.tabListOffset;
         this.scrollTop = dragState.tabListOffset;
+        dragState.draggedTabPosition -= dragState.tabListOffset;
         const yOffset =
           dragState.draggedTabPosition -
           dragState.originalTabPositions[dragState.draggedTab.id] +

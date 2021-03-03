@@ -5,6 +5,7 @@ const initializeDrag = require("./modules/initializeDrag");
 const scroll = require("./modules/scroll");
 const filter = require("./modules/filter");
 const onScroll = require("./modules/onScroll");
+const adjustMenu = require("./modules/adjustMenu");
 
 // before closing browser, call localStorage.removeItem(key) for all the titles, removing everything
 
@@ -133,7 +134,8 @@ const state = {
   scrollTop: 0,
   maxScrollbarThumbOffset: 0,
   filteredOutTabs: 0,
-  filterIsActive: false
+  filterIsActive: false,
+  selectedTabs: []
 };
 
 // render tabs
@@ -169,6 +171,27 @@ document.addEventListener("click", e => {
       chrome.tabs.highlight({ tabs: tab.index }, function () { });
     });
     // chrome.browserAction.openPopup()
+  } else if (e.target.classList.contains("tab-list-item__checkbox")) {
+    if (e.target.checked) {
+      const moveDownButton = document.getElementById("move-to-bottom");
+      moveDownButton.removeAttribute("disabled");
+      moveDownButton.classList.remove("header__menu-item-button--disabled");
+      state.selectedTabs = [...state.selectedTabs, e.target.parentElement];
+    } else {
+      state.selectedTabs = state.selectedTabs.filter(
+        t => t.id != e.target.parentElement.id
+      );
+      if (state.selectedTabs.length < 1) {
+        // console.log("less than 1");
+        const moveDownButton = document.getElementById("move-to-bottom");
+        moveDownButton.setAttribute("disabled", true);
+        moveDownButton.classList.add("header__menu-item-button--disabled");
+      }
+    }
+  } else if (e.target.id == "move-to-bottom") {
+    const tabs = [...document.getElementsByClassName("tab-list-item")];
+    const selectedTabs = tabs.filter(t => t.children[1].checked);
+    selectedTabs.forEach(t => (t.style.background = "red"));
   }
 });
 

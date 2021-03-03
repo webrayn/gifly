@@ -18,6 +18,7 @@ function initializeDrag(event) {
   const draggedTab = event.target.parentElement;
   const shiftY = event.clientY - draggedTab.getBoundingClientRect().top;
   const draggedTabPosition = event.pageY - shiftY;
+  const tabTopPosInViewport = event.pageY - shiftY;
   const tabIndex = listedTabs.findIndex(t => t.id === draggedTab.id);
   const tabsAbove = listedTabs.slice(0, tabIndex);
   const tabsBelow = listedTabs.slice(tabIndex + 1);
@@ -29,8 +30,8 @@ function initializeDrag(event) {
     .forEach(t => {
       t.classList.add("tab-list-item--moveable", "tab-list-item--moving");
     });
-  const originalTabPositions = listedTabs.reduce((a, t) => {
-    a[t.id] = t.offsetTop + headerHeight;
+  const initialTabPositions = listedTabs.reduce((a, t) => {
+    a[t.id] = t.offsetTop;
     return a;
   }, {});
 
@@ -46,6 +47,7 @@ function initializeDrag(event) {
     tabListContainer,
     tabListScrollTop,
     maxScrollTop,
+    tabOffset: 0,
     tabListOffset: 0,
     maxTabListOffset: maxScrollTop,
     margin,
@@ -55,21 +57,40 @@ function initializeDrag(event) {
     tabIndex,
     tabsAbove,
     tabsBelow,
-    originalTabPositions,
-    maxTabOffsetAbove: headerHeight - originalTabPositions[draggedTab.id],
+    initialTabPositions,
+    tabTopPosInViewport,
+    tabPositionInTheList: 0,
+    minTabPosition: 0,
+    maxTabPosition: tabListHeight - margin - draggedTab.offsetHeight,
+    maxTabOffsetAbove: headerHeight - initialTabPositions[draggedTab.id],
     maxTabOffsetBelow:
       tabListHeight -
       margin +
       headerHeight -
       draggedTab.offsetHeight -
-      originalTabPositions[draggedTab.id],
+      initialTabPositions[draggedTab.id],
+    getTabTopPosInList() {
+      const position =
+        this.pointerPosition -
+        this.shiftY -
+        this.headerHeight +
+        this.tabListScrollTop +
+        this.tabListOffset;
+
+      const correctedPosition = Math.min(
+        this.maxTabPosition,
+        Math.max(this.minTabPosition, position)
+      );
+
+      return correctedPosition;
+    },
     shouldScroll() {
-      const draggedTapTop = this.pointerPosition - this.shiftY;
-      const tabBottom = this.pointerPosition - this.shiftY + this.tabHeight;
-      if (draggedTapTop < 184) {
+      const tabTopPosInViewport = this.pointerPosition - this.shiftY;
+      const tabBottomPosInViewport = tabTopPosInViewport + this.tabHeight;
+      if (tabTopPosInViewport < 184) {
         return "up";
       } else if (
-        tabBottom > 420 &&
+        tabBottomPosInViewport > 420 &&
         this.tabListOffset < this.maxTabListOffset &&
         this.tabListScrollTop < this.maxScrollTop
       ) {

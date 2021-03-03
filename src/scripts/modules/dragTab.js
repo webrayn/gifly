@@ -1,25 +1,30 @@
 "use strict";
 
+// this function will move tab up or down, depending on whether the distance value is positive or negative
+
 function dragTab(options = {}) {
   const { distance = 0, speed = 0 } = options;
   const dragState = this.dragState;
 
   if (dragState) {
+    const initialTabPosition =
+      dragState.initialTabPositions[dragState.draggedTab.id];
+
+    // const currentTabPosition = dragState.;
+    const newTabPosition = currentTabPosition + distance;
+
     // change position of the dragged tab, ensuring it doesn't exceed the max
     const yOffset =
-      dragState.draggedTabPosition -
-      dragState.originalTabPositions[dragState.draggedTab.id] +
-      dragState.tabListScrollTop;
+      currentTabPosition - initialTabPosition + dragState.tabListScrollTop;
 
-    const distanceToDrag = Math.max(
-      dragState.maxTabOffsetAbove,
-      Math.min(yOffset, dragState.maxTabOffsetBelow)
+    dragState.draggedTab.style.setProperty(
+      "--y-offset",
+      dragState.tabOffset + "px"
     );
-    dragState.draggedTab.style.setProperty("--y-offset", distanceToDrag + "px");
 
     dragState.tabsAbove.forEach(tab => {
       const totalDifference =
-        dragState.originalTabPositions[tab.id] -
+        dragState.initialTabPositions[tab.id] -
         dragState.draggedTabPosition -
         this.scrollTop;
       // get the difference between the bottom of todo and the top of draggable todo.
@@ -44,7 +49,7 @@ function dragTab(options = {}) {
 
     dragState.tabsBelow.forEach(tab => {
       const totalDifference =
-        dragState.originalTabPositions[tab.id] -
+        dragState.initialTabPositions[tab.id] -
         dragState.draggedTabPosition -
         this.scrollTop;
       const difference = totalDifference - dragState.tabHeight;

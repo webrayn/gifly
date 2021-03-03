@@ -31,12 +31,12 @@ function onTabDragEnd(event) {
 
   if (
     currentTabTopPosition <
-    dragState.originalTabPositions[dragState.draggedTab.id]
+    dragState.initialTabPositions[dragState.draggedTab.id]
   ) {
     dragState.tabsAbove.forEach(t => {
       if (
-        dragState.originalTabPositions[t.id] + 23 > currentTabTopPosition &&
-        dragState.originalTabPositions[t.id] - dragState.margin - 23 <
+        dragState.initialTabPositions[t.id] + 23 > currentTabTopPosition &&
+        dragState.initialTabPositions[t.id] - dragState.margin - 23 <
         currentTabTopPosition
       ) {
         dragState.tabList.insertBefore(dragState.draggedTab, t);
@@ -44,11 +44,11 @@ function onTabDragEnd(event) {
     });
   } else if (
     currentTabTopPosition >
-    dragState.originalTabPositions[dragState.draggedTab.id]
+    dragState.initialTabPositions[dragState.draggedTab.id]
   ) {
     dragState.tabsBelow.forEach(t => {
       if (
-        dragState.originalTabPositions[t.id] + 23 - dragState.margin <
+        dragState.initialTabPositions[t.id] + 23 - dragState.margin <
         currentTabTopPosition + dragState.tabHeight
       ) {
         dragState.tabList.insertBefore(dragState.draggedTab, t.nextSibling);

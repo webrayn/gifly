@@ -23,4 +23,8 @@
   // margin-top: 30px;
   // margin-bottom: var(--block-height);
   border-radius: var(--lesser-padding);
+
+  &:hover {
+    background: var(--color-two-hover);
+  }
 }

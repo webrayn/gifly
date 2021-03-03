@@ -1,6 +1,7 @@
 "use strict";
 
 const util = require("./util");
+const adjustMenu = require("./adjustMenu");
 
 // function filter() {
 //   const input = document.getElementById("filter");
@@ -34,39 +35,58 @@ const util = require("./util");
 //   });
 // }
 function filter() {
+  const state = this;
+  state.filteredOutTabs = 0;
   const input = document.getElementById("filter");
   const filter = input.value.toLowerCase();
+
+  const hideTab = tab => { };
   // ensure that tabList stays original height, but hide the scrollbar if appropriate
   document.getElementById("tab-list").classList.add("tab-list--filtered");
-  if (filter != "") {
-    util.adjustScrollbar();
-  } else {
-    // document.getElementById("tab-list").classList.remove("tab-list--filtered");
-    // setTimeout(() => this.filterIsActive)
-    this.filteredOutTabs = 0;
-  }
+
+  util.adjustScrollbar();
+
+  // document.getElementById("tab-list").classList.remove("tab-list--filtered");
+  // setTimeout(() => state.filterIsActive)
+  state.filteredOutTabs = 0;
+
   const listedTabs = [...document.getElementsByClassName("tab-list-item")];
+  // const filteredTabs = listedTabs.filter(tab => tab.title.includes(filter));
 
   listedTabs.forEach(tab => {
-    tab.classList.remove("tab-list-item--filtered");
+    // as long as filter is active, all tabs are filtered
+    // tab.classList.add("tab-list-item--filtered");
+    // tab.style.setProperty("--y-offset", 0);
     tab.classList.remove("tab-list-item--hidden");
-    const title = this.tabs[tab.id].title.toLowerCase();
+    tab.classList.remove("tab-list-item--filtered");
+    const title = state.tabs[tab.id].title.toLowerCase();
+
+    // if tab's title doesn't include filter
     if (!title.includes(filter)) {
-      tab.ariaHidden = "true";
-      tab.classList.add("tab-list-item--hidden");
-      this.filteredOutTabs += 1;
+      tab.style.setProperty("--y-offset", state.filteredOutTabs * -46 + "px");
+      // if tab isn't already hidden
+      if (!tab.classList.contains("tab-list-item--hidden")) {
+        tab.ariaHidden = "true";
+        tab.classList.add("tab-list-item--hidden");
+        tab.setAttribute("disabled", true);
+        state.filteredOutTabs += 1;
+      }
+      // if tab's title does include the filter
     } else {
-      tab.ariaHidden = "false";
-      tab.style.setProperty("--y-offset", this.filteredOutTabs * 46 + "px");
-      tab.classList.remove("tab-list-item--hidden");
-      // if (this.filteredOutTabs > 0) {
-      //   this.filteredOutTabs -= 1;
-      // }
-      tab.style.setProperty("--offset-speed", 1000 + "ms");
+      tab.style.setProperty("--y-offset", state.filteredOutTabs * -46 + "px");
       tab.classList.add("tab-list-item--filtered");
+      // if tab is hidden, unhide it
+      if (tab.classList.contains("tab-list-item--hidden")) {
+        tab.ariaHidden = "false";
+        tab.classList.remove("tab-list-item--hidden");
+        state.filteredOutTabs -= 1;
+      }
     }
-    // tab.style.setProperty("--y-offset", this.filteredOutTabs * 46 * -1 + "px");
   });
+
+  console.log(state.filteredOutTabs);
+
+  // adjustMenu.call(state);
 }
 
 module.exports = filter;

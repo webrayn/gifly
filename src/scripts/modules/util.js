@@ -46,7 +46,7 @@ function adjustScrollbar() {
   const container = document.getElementById("tab-list-container");
   const margin = 6;
   const numOfTabs = document.getElementsByClassName("tab-list-item").length;
-  console.log(numOfTabs);
+  // console.log(numOfTabs);
   const visibleContentHeight = container.offsetHeight - margin; // 500
   const wholeContentHeight = container.scrollHeight - margin;
   const hiddenContentHeight = wholeContentHeight - visibleContentHeight;

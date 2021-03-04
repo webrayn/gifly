@@ -13,6 +13,8 @@
   --duplicate-indicator-color: none;
   // --y-pos: null;
   --y-offset: 0;
+  --delay: 0;
+  --speed: 0;
   --offset-speed: 0;
   // --active-indicator-space: calc(var(--greater-padding) + var(--lesser-padding));
   --opacity: 1;
@@ -48,17 +50,20 @@
     opacity: 0;
     // margin-top: -46px;
     // transition: opacity 200ms ease-out, visibility 0ms 200ms, margin 0ms 200ms;
-    transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out, visibility 0ms 1000ms;
+    // transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out, visibility 0ms 1000ms;
+    transition: opacity 1000ms ease-in-out, transform 1000ms 1000ms ease-in-out, visibility 0ms 1000ms;
     transform: translateY(var(--y-offset));
     // transition: opacity 1000ms ease-in-out;
   }
 
+  // add transition delay only if tab above gets hidden. use variable. otherwsie, no delay.
   &--filtered {
     // visibility: visible;
     opacity: 1;
     // animation: filteredIn 1000ms ease-out;
     transform: translateY(var(--y-offset));
-    transition: transform 1000ms ease-in-out, opacity 1000ms ease-in;
+    // transition: transform 1000ms var(--delay) ease-in-out, opacity 1000ms var(--delay) ease-in;
+    transition: transform var(--speed) var(--delay) ease-in-out, opacity 1000ms var(--delay) ease-in;
   }
 
   &--held-down {

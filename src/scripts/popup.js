@@ -133,7 +133,9 @@ const state = {
   dragTimer: null,
   scrollTop: 0,
   maxScrollbarThumbOffset: 0,
-  filteredOutTabs: 0,
+  totalFilteredOutTabs: 0,
+  lastFilteredOutTabs: 0,
+  filteredInTabs: 0,
   filterIsActive: false,
   selectedTabs: []
 };

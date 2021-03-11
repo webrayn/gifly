@@ -1,3 +1,5 @@
+// wrap filter into a div with class filter. the current "filter" will have class input or text
+
 .filter {
   top: 0;
   font-size: 1rem;
@@ -27,4 +29,9 @@
   &:hover {
     background: var(--color-two-hover);
   }
+
+  &--active {
+    padding-right: var(--block-height);
+  }
+
 }

@@ -14,8 +14,9 @@
   // --y-pos: null;
   --y-offset: 0;
   --delay: 0;
+  --opacity-delay: 0;
   --speed: 0;
-  --offset-speed: 0;
+  // --offset-speed: 0;
   // --active-indicator-space: calc(var(--greater-padding) + var(--lesser-padding));
   --opacity: 1;
   // --scale: 1;
@@ -44,26 +45,37 @@
     transition: background-color 100ms ease-in-out, transform 60ms ease-out, opacity 140ms ease-in-out;
   }
 
-  // use visibility hidden because you can add transition to it.
+  /* when tab gets hidden:
+  - its opacity should star decreasing without delay
+  - it should not move until its opacity is 0, so transform should have 1000ms delay
+  */
   &--hidden {
     visibility: hidden;
     opacity: 0;
-    // margin-top: -46px;
-    // transition: opacity 200ms ease-out, visibility 0ms 200ms, margin 0ms 200ms;
-    // transition: opacity 1000ms ease-in-out, transform 1000ms ease-in-out, visibility 0ms 1000ms;
-    transition: opacity 1000ms ease-in-out, transform 1000ms 1000ms ease-in-out, visibility 0ms 1000ms;
+    transition: opacity 1000ms ease-in-out, transform 0ms 1000ms ease-in-out, visibility 0ms 1000ms;
     transform: translateY(var(--y-offset));
-    // transition: opacity 1000ms ease-in-out;
+
+    &:hover {
+      transition: opacity 1000ms ease-in-out, transform 0ms 1000ms ease-in-out, visibility 0ms 1000ms;
+    }
   }
 
-  // add transition delay only if tab above gets hidden. use variable. otherwsie, no delay.
+  /* when tab gets unhidden:
+  - it should move into place without delay and with speed 0, so transform should have speed 0 and delay 0
+  - its opacity increase should be delayed ONLY IF some tabs above are visible Otherwise, no opacity-delay needed.
+  */
+  /* when tab is already visible:
+  - it should move into place with speed 1000ms and with delay ONLY if filteredOutTabs > 0, so transform should have speed 1000ms and delay 1000ms
+  - its opacity should start increasing with delay ONLY IF some tabs above are getting unhidden
+  */
   &--filtered {
-    // visibility: visible;
     opacity: 1;
-    // animation: filteredIn 1000ms ease-out;
     transform: translateY(var(--y-offset));
-    // transition: transform 1000ms var(--delay) ease-in-out, opacity 1000ms var(--delay) ease-in;
-    transition: transform var(--speed) var(--delay) ease-in-out, opacity 1000ms var(--delay) ease-in;
+    transition: transform var(--speed) var(--delay) ease-in-out, opacity 1000ms var(--opacity-delay) ease-in-out;
+
+    &:hover {
+      transition: transform var(--speed) var(--delay) ease-in-out, opacity 1000ms var(--opacity-delay) ease-in-out;
+    }
   }
 
   &--held-down {
@@ -80,7 +92,7 @@
       width: 2rem;
       position: absolute;
       right: calc(100% + 3px);
-      // border-radius: 0 var(--lesser-padding) var(--lesser-padding) 0;
+      border-radius: 0 var(--lesser-padding) var(--lesser-padding) 0;
       top: 0;
       height: 100%;
       // background: orange;

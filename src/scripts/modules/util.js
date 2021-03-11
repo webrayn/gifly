@@ -45,14 +45,21 @@ function adjustScrollbar() {
   // determine if scrollbar is needed, and if it's not then remove it
   const container = document.getElementById("tab-list-container");
   const margin = 6;
-  const numOfTabs = document.getElementsByClassName("tab-list-item").length;
-  // console.log(numOfTabs);
+  // const numOfTabs = document.getElementsByClassName("tab-list-item").length;
+  const tabs = document.getElementsByClassName("tab-list-item");
+  const visibleTabs = [...tabs].reduce((a, t) => {
+    if (!t.classList.contains("tab-list-item--hidden")) {
+      a += 1;
+      return a;
+    }
+  }, 0);
+  // console.log(visibleTabs);
   const visibleContentHeight = container.offsetHeight - margin; // 500
   const wholeContentHeight = container.scrollHeight - margin;
   const hiddenContentHeight = wholeContentHeight - visibleContentHeight;
   const containerToContentRatio = visibleContentHeight / wholeContentHeight;
   const scrollbarTrack = document.getElementById("scrollbar-track");
-  if (numOfTabs > 11) {
+  if (visibleTabs > 11) {
     container.children[0].classList.add("tab-list--scrollable");
     scrollbarTrack.classList.remove("scrollbar-track--hidden");
   } else {

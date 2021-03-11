@@ -79,5 +79,35 @@
     // bottom: 0;
   }
 
+  &__remove-filter-btn {
+    position: absolute;
+    z-index: 1;
+    right: 12.3rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: var(--lesser-padding);
+    background: transparent;
+    // background: var(--color-one);
+
+    &::before {
+      content: "";
+      position: absolute;
+      width: 120%;
+      height: 120%;
+      top: -0.1rem;
+      left: -0.1rem;
+      border-radius: var(--lesser-padding);
+      z-index: -1;
+      pointer-events: none;
+      transition: background-color 140ms ease-in-out;
+    }
+
+    &:hover {
+      &::before {
+        background: var(--color-one);
+      }
+    }
+  }
+
 }
 

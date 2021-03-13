@@ -137,7 +137,10 @@ const state = {
   lastFilteredOutTabs: 0,
   filteredInTabs: 0,
   filterIsActive: false,
-  selectedTabs: []
+  selectedTabs: [],
+  filterState: {
+    visibleTabs: 0
+  }
 };
 
 // render tabs

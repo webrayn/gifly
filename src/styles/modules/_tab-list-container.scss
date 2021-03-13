@@ -4,15 +4,14 @@
 .tab-list-container {
   --scrolltop: 0;
   position: relative;
-  width: 40rem;
+  width: 42rem;
   max-height: 506px;
   overflow-y: scroll;
   padding: 0;
   margin: 0;
 
-  // &--scroll {
-  //   padding-right: 0;
-  // }
-
+  &--no-scroll {
+    overflow-y: hidden;
+  }
   
 }

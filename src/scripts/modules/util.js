@@ -44,28 +44,29 @@ function calculateScrollbarHeight() {
 function adjustScrollbar() {
   // determine if scrollbar is needed, and if it's not then remove it
   const container = document.getElementById("tab-list-container");
-  const margin = 6;
-  // const numOfTabs = document.getElementsByClassName("tab-list-item").length;
   const tabs = document.getElementsByClassName("tab-list-item");
-  const visibleTabs = [...tabs].reduce((a, t) => {
+  const visibleTabsCount = [...tabs].reduce((a, t) => {
     if (!t.classList.contains("tab-list-item--hidden")) {
       a += 1;
-      return a;
     }
+    return a;
   }, 0);
-  // console.log(visibleTabs);
+  const scrollbarTrack = document.getElementById("scrollbar-track");
+  if (visibleTabsCount > 11) {
+    container.classList.remove("tab-list-container--no-scroll");
+    container.children[0].classList.add("tab-list--scrollable");
+    scrollbarTrack.classList.remove("scrollbar-track--hidden");
+  } else {
+    container.classList.add("tab-list-container--no-scroll");
+    container.children[0].classList.remove("tab-list--scrollable");
+    scrollbarTrack.classList.add("scrollbar-track--hidden");
+  }
+
+  const margin = 6;
   const visibleContentHeight = container.offsetHeight - margin; // 500
   const wholeContentHeight = container.scrollHeight - margin;
   const hiddenContentHeight = wholeContentHeight - visibleContentHeight;
   const containerToContentRatio = visibleContentHeight / wholeContentHeight;
-  const scrollbarTrack = document.getElementById("scrollbar-track");
-  if (visibleTabs > 11) {
-    container.children[0].classList.add("tab-list--scrollable");
-    scrollbarTrack.classList.remove("scrollbar-track--hidden");
-  } else {
-    container.children[0].classList.remove("tab-list--scrollable");
-    scrollbarTrack.classList.add("scrollbar-track--hidden");
-  }
 
   // const content = container.children[0];
 

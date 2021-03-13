@@ -180,9 +180,18 @@ const adjustMenu = require("./adjustMenu");
 // }
 function filter() {
   const state = this;
+  const filterState = state.filterState;
   state.filteredOutTabs = 0;
   const input = document.getElementById("filter");
   const filter = input.value.toLowerCase();
+
+  // scroll to the top of the list
+  const tabListContainer = document.getElementById("tab-list-container");
+  tabListContainer.scroll({
+    top: 0,
+    left: 0,
+    behavior: "smooth"
+  });
 
   const hideTab = tab => {
     tab.ariaHidden = "true";
@@ -197,6 +206,7 @@ function filter() {
   };
 
   state.totalFilteredOutTabs = 0;
+  filterState.visibleTabs = 0;
   let filteredOutTabs = 0;
   let filteredInTabs = 0;
 
@@ -227,9 +237,11 @@ function filter() {
         hideTab(tab);
         tab.classList.remove("tab-list-item--filtered");
         filteredOutTabs += 1;
+        filterState.visibleTabs -= 1;
       }
     } else {
       // if tab's title DOES include filter
+      filterState.visibleTabs += 1;
       tab.classList.add("tab-list-item--filtered");
       tab.style.setProperty(
         "--opacity-delay",
@@ -250,6 +262,7 @@ function filter() {
         // if there are VISIBLE TABS after current tab, it needs opacity delay in order to wait for tabs that follow to move out the way
         // it has nothing to do with how many tabs are filtered
 
+        // this can be optimized by keeping record of next visible tab
         if (
           filteredInTabs > 0 ||
           filteredOutTabs > 0 ||
@@ -271,7 +284,7 @@ function filter() {
 
   // console.log(state.totalFilteredOutTabs);
   util.adjustScrollbar();
-  // adjustMenu.call(state);
+  adjustMenu.call(state);
 }
 
 module.exports = filter;

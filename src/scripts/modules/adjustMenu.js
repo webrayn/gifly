@@ -8,22 +8,20 @@
 */
 function adjustMenu() {
   const state = this;
-  const filterIsActive = state.filterIsActive;
+  // const filterIsActive = state.filterIsActive;
 
   const disableButton = btn => {
     btn.setAttribute("disabled", true);
-    btn.classList.add("header__menu-item-button--disabled");
+    btn.classList.add("menu-item-btn--disabled");
   };
 
   const enableButton = btn => {
     btn.setAttribute("disabled", false);
-    btn.classList.remove("header__menu-item-button--disabled");
+    btn.classList.remove("menu-item-btn--disabled");
   };
 
   // get the buttons
-  const menuButtons = [
-    ...document.getElementsByClassName(`header__menu-item-button`)
-  ];
+  const menuButtons = [...document.getElementsByClassName(`menu-item-btn`)];
   // const moveToTopBtn = document.getElementById("move-to-top-btn");
   // const moveToBottomBtn = document.getElementById("move-to-bottom-btn");
   // const closeSeletedBtn = document.getElementById("close-selected-btn");

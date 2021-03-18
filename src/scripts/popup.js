@@ -197,6 +197,14 @@ document.addEventListener("click", e => {
     const tabs = [...document.getElementsByClassName("tab-list-item")];
     const selectedTabs = tabs.filter(t => t.children[1].checked);
     selectedTabs.forEach(t => (t.style.background = "red"));
+  } else if (e.target.id == "remove-filter-text-btn") {
+    const filterInput = document.getElementById("filter-input");
+    filterInput.classList.add("filter__input--cleared");
+    setTimeout(() => {
+      filterInput.value = "";
+      filter.call(state);
+      filterInput.classList.remove("filter__input--cleared");
+    }, 140);
   }
 });
 

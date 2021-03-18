@@ -1,37 +1,74 @@
 // wrap filter into a div with class filter. the current "filter" will have class input or text
 
 .filter {
-  top: 0;
-  font-size: 1rem;
-  // background: #EEE;
-  // background: #445;
-  // background: #667;
-  
-  // background: #5e606e;
-  // background: #636374;
-  // background: rgba(108, 109, 127, 0.5);
-  // background: #73738C;
-  background: var(--color-two);
-  color: white;
-  padding: var(--greater-padding);
-  padding-left: var(--block-height);
-  // width: 100%;
-  // width: 61%;
+  position: relative;
   flex: 1 0 0;
   height: var(--block-height);
-  border: 0;
-  // margin-right: var(--lesser-padding);
-  // margin-top: var(--lesser-padding);
-  // margin-top: 30px;
-  // margin-bottom: var(--block-height);
-  border-radius: var(--lesser-padding);
+  // background: skyblue;
 
-  &:hover {
-    background: var(--color-two-hover);
+  &__input {
+    // top: 0;
+    font-size: 1rem;
+    background: var(--color-two);
+    color: white;
+    padding: var(--greater-padding);
+    padding-left: var(--block-height);
+    padding-right: var(--block-height);
+    height: 100%;
+    width: 100%;
+    border: 0;
+    overflow-x: scroll;
+    border-radius: var(--lesser-padding);
+    transition: background-color 140ms ease-in-out;
+  
+    &:hover {
+      background: var(--color-two-hover);
+      transition: background-color 140ms ease-in-out;
+    }
+
+    &--cleared {
+      color: transparent;
+      transition: color 140ms ease-out;
+    }
   }
 
-  &--active {
-    padding-right: var(--block-height);
+  &__icon {
+    position: absolute;
+    top: var(--greater-padding);
+    left: var(--greater-padding);
+    pointer-events: none;
+  }
+
+  &__remove-text-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  &__remove-text-btn {
+    position: absolute;
+    padding: 0;
+    z-index: 1;
+    top: var(--lesser-padding);
+    right: var(--lesser-padding);
+    width: 1.4rem;
+    height: 1.4rem;
+    border-radius: var(--lesser-padding);
+    background: transparent;
+    // background: var(--color-one);
+    opacity: 0.4;
+
+    &:focus {
+      box-shadow: inset 0 0 0 0.1rem lime;
+    }
+
+    &:hover {
+      background: var(--color-one);
+      transition: background-color 140ms ease-in-out;
+      // opacity: 0.4;
+    }
   }
 
 }

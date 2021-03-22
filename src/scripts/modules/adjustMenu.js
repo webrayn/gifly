@@ -7,7 +7,7 @@
   calling filter
 */
 function adjustMenu() {
-  const state = this;
+  // const state = this;
   // const filterIsActive = state.filterIsActive;
 
   const disableButton = btn => {
@@ -16,7 +16,7 @@ function adjustMenu() {
   };
 
   const enableButton = btn => {
-    btn.setAttribute("disabled", false);
+    btn.removeAttribute("disabled");
     btn.classList.remove("menu-item-btn--disabled");
   };
 
@@ -30,8 +30,9 @@ function adjustMenu() {
     "select-deselect-all-btn"
   );
 
-  // get currently rendered tabs
+  // get currently visible tabs
   const tabs = document.getElementsByClassName("tab-list-item");
+  // const tabs = state.tabs;
   const visibleTabs = [...tabs].reduce((a, t) => {
     if (!t.classList.contains("tab-list-item--hidden")) {
       a += 1;

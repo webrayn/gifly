@@ -1,6 +1,6 @@
 const util = require("./modules/util");
 const createTabComponent = require("./modules/createTabComponent");
-const renderTabComponent = require("./modules/renderTabComponent");
+const addTab = require("./modules/addTab");
 const initializeDrag = require("./modules/initializeDrag");
 const scroll = require("./modules/scroll");
 const filter = require("./modules/filter");
@@ -43,7 +43,7 @@ const adjustMenu = require("./modules/adjustMenu");
 //
 
 const state = {
-  // make sure to save thes in localStorage so they persist between tabs
+  // make sure to save these in localStorage so they persist between tabs
   hue: 0,
   lightness: 60,
   tabLastMovedDown: null,
@@ -53,55 +53,19 @@ const state = {
     //   url: "https://www.youtube.com"
     // }
   },
-  tabURLs: {
+  tabsByURL: {
     // "https://www.google.com" : {
     //   ids: [],
     //   color: "transparent"
     // }
   },
-  addTab(tab) {
-    this.tabs[`tab-${tab.id}`] = {
-      index: tab.index,
-      url: tab.url,
-      title: tab.title
-    };
-    // if tab's url isn't already listed
-    if (!this.tabURLs[tab.url]) {
-      this.tabURLs[tab.url] = {
-        ids: [`tab-${tab.id}`],
-        color: null
-      };
-    } else {
-      this.tabURLs[tab.url].ids.push(`tab-${tab.id}`);
-      // if this is the first duplicate, it needs a color
-      if (this.tabURLs[tab.url].ids.length == 2) {
-        // if any discarded colors exist, use one of them instead of creating a new one
-        if (this.availableColors.length > 0) {
-          this.tabURLs[tab.url].color = this.availableColors.pop();
-          // save available colors to storage API here
-          // { code here }
-        } else {
-          util.addNewColor.call(this, tab.url);
-        }
-        // the older tab with same title needs its color updated, since it just became a duplicate
-        const olderTabComponent = document.getElementById(
-          this.tabURLs[tab.url].ids[0]
-        );
-        olderTabComponent.style.setProperty(
-          "--duplicate-indicator-color",
-          this.tabURLs[tab.url].color
-        );
-        olderTabComponent.classList.add("tab-list-item--duplicate");
-      }
-    }
-    renderTabComponent.call(this, tab);
-  },
+  addTab,
   deleteTab(id) {
     const tabListContainer = document.getElementById("tab-list-container");
     this.scrollTop = tabListContainer.scrollTop;
     const tabUrl = this.tabs[id].url;
     // remove ID of deleted tab from the list of ids associated with tab URL
-    this.tabURLs[tabUrl].ids = this.tabURLs[tabUrl].ids.filter(
+    this.tabsByURL[tabUrl].ids = this.tabsByURL[tabUrl].ids.filter(
       tabId => tabId != id
     );
     const tabsList = document.getElementById("tab-list");
@@ -118,11 +82,11 @@ const state = {
       this.scrollTop -= 40;
     }, 1400);
     // if there are no more tabs with this title, tab object can be removed
-    if (this.tabURLs[tabUrl].ids.length == 0) {
-      delete this.tabURLs[tabUrl];
+    if (this.tabsByURL[tabUrl].ids.length == 0) {
+      delete this.tabsByURL[tabUrl];
       // if there are fewer than 2 tabs with this title, they are no longer duplicates and don't need their color
-    } else if (this.tabURLs[tabUrl].ids.length < 2) {
-      this.availableColors.push(this.tabURLs[tabUrl].color);
+    } else if (this.tabsByURL[tabUrl].ids.length < 2) {
+      this.availableColors.push(this.tabsByURL[tabUrl].color);
       // remove color and uplicate class from the one remaining tab (the DOM element) with this title
     }
   },

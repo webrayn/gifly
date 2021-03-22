@@ -14,8 +14,8 @@
   // --y-pos: null;
   --y-offset: 0;
   --delay: 0;
-  --opacity-delay: 0;
-  --speed: 0;
+  --opacity-delay: 0ms;
+  --speed: 0ms;
   // --offset-speed: 0;
   // --active-indicator-space: calc(var(--greater-padding) + var(--lesser-padding));
   --opacity: 1;
@@ -52,11 +52,11 @@
   &--hidden {
     visibility: hidden;
     opacity: 0;
-    transition: opacity 1000ms ease-in-out, transform 0ms 1000ms ease-in-out, visibility 0ms 1000ms;
+    transition: opacity 160ms ease-in-out, transform 0ms 160ms ease-in-out, visibility 0ms 160ms;
     transform: translateY(var(--y-offset));
 
     &:hover {
-      transition: opacity 1000ms ease-in-out, transform 0ms 1000ms ease-in-out, visibility 0ms 1000ms;
+      transition: opacity 160ms ease-in-out, transform 0ms 160ms ease-in-out, visibility 0ms 160ms;
     }
   }
 
@@ -71,10 +71,10 @@
   &--filtered {
     opacity: 1;
     transform: translateY(var(--y-offset));
-    transition: transform var(--speed) var(--delay) ease-in-out, opacity 1000ms var(--opacity-delay) ease-in-out;
+    transition: transform var(--speed) var(--delay) ease-in-out, opacity 160ms var(--opacity-delay) ease-in-out;
 
     &:hover {
-      transition: transform var(--speed) var(--delay) ease-in-out, opacity 1000ms var(--opacity-delay) ease-in-out;
+      transition: transform var(--speed) var(--delay) ease-in-out, opacity 160ms var(--opacity-delay) ease-in-out;
     }
   }
 

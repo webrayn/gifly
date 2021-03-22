@@ -16,14 +16,19 @@ function adjustBodyPadding() {
   }
 }
 
-function addNewColor(URL) {
-  this.tabURLs[URL].color = `hsl(${this.hue}, 100%, ${this.lightness}%)`;
+function getNewDuplicateColor(URL) {
+  const state = this;
+  const color = `hsl(${state.hue}, 100%, ${state.lightness}%)`;
+
+  // update color values in state so they are different for the next duplicate
   if (this.hue <= 280) {
     this.hue += 40;
   } else if (this.lightness == 60) {
     this.hue = 0;
     this.lightness = 40;
   }
+
+  return color;
 }
 
 function getListedTabs() {
@@ -106,7 +111,7 @@ function dragTab(options = {}) {
 
 module.exports = {
   adjustBodyPadding,
-  addNewColor,
+  getNewDuplicateColor,
   getListedTabs,
   adjustScrollbar,
   calculateScrollbarHeight,

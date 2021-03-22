@@ -84,17 +84,17 @@ const adjustMenu = require("./adjustMenu");
 //       // console.log(title, filteredOutTabs);
 //       tab.style.setProperty(
 //         "--opacity-delay",
-//         filteredOutTabs > 0 ? "1000ms" : "0ms"
+//         filteredOutTabs > 0 ? "160ms" : "0ms"
 //       );
 
 //       if (!tab.classList.contains("tab-list-item--hidden")) {
 //         // if tab is already visible
-//         tab.style.setProperty("--speed", "1000ms");
+//         tab.style.setProperty("--speed", "160ms");
 //         tab.style.setProperty(
 //           "--delay",
-//           filteredOutTabs > 0 ? "1000ms" : "0ms"
+//           filteredOutTabs > 0 ? "160ms" : "0ms"
 //         );
-//         // tab.style.setProperty("--delay", "1000ms");
+//         // tab.style.setProperty("--delay", "160ms");
 //       } else {
 //         // if tab is hidden, UNHIDE it
 //         unhideTab(tab);
@@ -107,7 +107,7 @@ const adjustMenu = require("./adjustMenu");
 //           filteredOutTabs > 0 ||
 //           tabsStatus.slice(index).some(t => t.visible == true)
 //         ) {
-//           tab.style.setProperty("--opacity-delay", "1000ms");
+//           tab.style.setProperty("--opacity-delay", "160ms");
 //         } else {
 //           tab.style.setProperty("--opacity-delay", "0ms");
 //         }
@@ -227,20 +227,20 @@ const adjustMenu = require("./adjustMenu");
 //       // console.log(title, filteredOutTabs);
 //       tab.style.setProperty(
 //         "--opacity-delay",
-//         filteredOutTabs > 0 ? "1000ms" : "0ms"
+//         filteredOutTabs > 0 ? "160ms" : "0ms"
 //       );
 //       // lastMatchedTabIndex = index;
 //       // filteredIn = false;
 
 //       if (!tab.classList.contains("tab-list-item--hidden")) {
 //         // if tab is already visible
-//         tab.style.setProperty("--speed", "1000ms");
+//         tab.style.setProperty("--speed", "160ms");
 //         tab.style.setProperty(
 //           "--delay",
-//           filteredOutTabs > 0 ? "1000ms" : "0ms"
+//           filteredOutTabs > 0 ? "160ms" : "0ms"
 //         );
 //         lastAlreadyVisibleTabIndex = index;
-//         // tab.style.setProperty("--delay", "1000ms");
+//         // tab.style.setProperty("--delay", "160ms");
 //       } else {
 //         // if tab is hidden, UNHIDE it
 //         unhideTab(tab);
@@ -254,7 +254,7 @@ const adjustMenu = require("./adjustMenu");
 //           // filteredInTabs > 0 ||
 //           tabsStatus.slice(index).some(t => t.visible == true)
 //         ) {
-//           tab.style.setProperty("--opacity-delay", "1000ms");
+//           tab.style.setProperty("--opacity-delay", "160ms");
 //         } else {
 //           tab.style.setProperty("--opacity-delay", "0ms");
 //         }
@@ -284,7 +284,6 @@ function filter() {
   const filter = input.value.toLowerCase();
 
   // scroll to the top of the list
-  // if (filter != "")
   const tabListContainer = document.getElementById("tab-list-container");
   tabListContainer.scroll({
     top: 0,
@@ -329,7 +328,7 @@ function filter() {
   //   return statusObj;
   // });
   const tabsObj = tabs.reduce(
-    (a, tab, index) => {
+    (a, tab) => {
       const title = state.tabs[tab.id].title.toLowerCase();
       const statusObj = {};
       // check if tab is currently visible
@@ -370,6 +369,7 @@ function filter() {
 
   // style tabs based on whether they (or those that preceed/follow them) match the filter
   tabs.forEach((tab, index) => {
+    // tab.classList.remove("tab-list-item--filtered");
     tab.style.setProperty(
       "--y-offset",
       state.totalFilteredOutTabs * -46 + "px"
@@ -393,25 +393,16 @@ function filter() {
       filterState.visibleTabs += 1;
       tab.classList.add("tab-list-item--filtered");
 
-      // if there are filteredOut tabs above, wait until they fade away before
-      tab.style.setProperty(
-        "--opacity-delay",
-        filteredOutTabs > 0 ? "1000ms" : "0ms"
-      );
-
       if (!tab.classList.contains("tab-list-item--hidden")) {
         // if tab is already visible
         if (firstAlreadyVisibleTabIndex == null) {
           firstAlreadyVisibleTabIndex = index;
         }
-        tab.style.setProperty("--speed", "1000ms");
+        // make sure speed is not set to 0 so tab doesn't move instantly
+        tab.style.setProperty("--speed", "160ms");
         // if there are filteredOut tabs above, wait until they fade away before moving up
-        tab.style.setProperty(
-          "--delay",
-          filteredOutTabs > 0 ? "1000ms" : "0ms"
-        );
+        tab.style.setProperty("--delay", filteredOutTabs > 0 ? "160ms" : "0ms");
         lastAlreadyVisibleTabIndex = index;
-        // tab.style.setProperty("--delay", "1000ms");
       } else {
         // if tab is hidden, UNHIDE it
         unhideTab(tab);
@@ -440,12 +431,11 @@ function filter() {
           lastAlreadyVisibleTabIndex > firstHiddenTabIndex ||
           nextVisibleTabIndex > index
         ) {
-          tab.style.setProperty("--opacity-delay", "1000ms");
+          tab.style.setProperty("--opacity-delay", "160ms");
         } else {
           tab.style.setProperty("--opacity-delay", "0ms");
         }
         tab.style.setProperty("--delay", "0ms");
-        // console.log(title, filteredOutTabs);
         tab.style.setProperty("--speed", "0ms");
         // filteredIn = true;
         filteredInTabs += 1;

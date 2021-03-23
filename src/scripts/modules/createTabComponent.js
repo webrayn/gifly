@@ -7,8 +7,12 @@ function createTabComponent(tab) {
   if (tab.active === true) {
     tabComponent.classList.add("tab-list-item--active");
   }
-  if (this.tabURLs[tab.url].color != null) {
+  if (this.duplicateColorsByURL[tab.url] != undefined) {
     tabComponent.classList.add("tab-list-item--duplicate");
+    tabComponent.style.setProperty(
+      "--duplicate-indicator-color",
+      this.duplicateColorsByURL[tab.url]
+    );
   }
 
   // create active tab indicator
@@ -39,11 +43,8 @@ function createTabComponent(tab) {
   // create tab Title
   const p = document.createElement("p");
   p.classList.add("tab-list-item__title");
-  tabComponent.style.setProperty(
-    "--duplicate-indicator-color",
-    this.tabURLs[tab.url].color
-  );
-  // p.style.backgroundColor = state.tabTitles[tab.title];
+
+  // this soulution isn't good, can't handle 44 Ws
   p.textContent = tab.title.substring(0, 60);
 
   // create delete button

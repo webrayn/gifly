@@ -53,12 +53,10 @@ const state = {
     //   url: "https://www.youtube.com"
     // }
   },
-  tabsByURL: {
-    // "https://www.google.com" : {
-    //   ids: [],
-    //   color: "transparent"
-    // }
+  tabIdsByURL: {
+    // "https://www.google.com" : ["tab-1", "tab-2", "tab-3"]
   },
+  duplicateColorsByURL: {},
   addTab,
   deleteTab(id) {
     const tabListContainer = document.getElementById("tab-list-container");

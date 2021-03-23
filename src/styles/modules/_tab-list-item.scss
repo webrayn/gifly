@@ -137,6 +137,7 @@
     position: relative;
     margin: 0 var(--greater-padding) 0 0;
     flex: 1 0 0;
+    // overflow: hidden;
   }
 
   &__delete-button {

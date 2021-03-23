@@ -26,15 +26,15 @@ function addTab(tab) {
         // { code here }
       } else {
         // addNewColor.call(state, tab.url);
-        state.duplicateColorsByURL[tab.url] = getNewDuplicateColor(tab.url);
+        state.duplicateColorsByURL[tab.url] = getNewDuplicateColor.call(state);
       }
-      // the older tab with same title needs its color updated, since it just became a duplicate
+      // the first tab with the same title needs its indicator color updated, since it just became a duplicate
       const olderTabComponent = document.getElementById(
-        state.tabIdsByURL[tab.url].ids[0]
+        state.tabIdsByURL[tab.url][0]
       );
       olderTabComponent.style.setProperty(
         "--duplicate-indicator-color",
-        state.tabIdsByURL[tab.url].color
+        state.duplicateColorsByURL[tab.url]
       );
       olderTabComponent.classList.add("tab-list-item--duplicate");
     }

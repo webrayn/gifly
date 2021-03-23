@@ -16,7 +16,7 @@ function adjustBodyPadding() {
   }
 }
 
-function getNewDuplicateColor(URL) {
+function getNewDuplicateColor() {
   const state = this;
   const color = `hsl(${state.hue}, 100%, ${state.lightness}%)`;
 

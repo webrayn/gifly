@@ -34,7 +34,9 @@ function createTabComponent(tab) {
   if (tab.favIconUrl != "" && tab.favIconUrl != undefined) {
     favIcon.src = tab.favIconUrl;
   } else {
-    favIcon.src = "chrome://favicon/" + tab.url;
+    // get back to this part after Chrome implements the new favicon API for manifest v3
+    // favIcon.src = "chrome://favicon/" + tab.url;
+    favIcon.src = "images/default20.png";
   }
 
   const domainName = tab.url.match(/(?<=:\/\/).+?(?=\/|$)/);

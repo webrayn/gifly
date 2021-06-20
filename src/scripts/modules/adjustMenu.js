@@ -33,7 +33,7 @@ function adjustMenu() {
   // get currently visible tabs
   const tabs = document.getElementsByClassName("tab-list-item");
   // const tabs = state.tabs;
-  const visibleTabs = [...tabs].reduce((a, t) => {
+  const numOfVisibleTabs = [...tabs].reduce((a, t) => {
     if (!t.classList.contains("tab-list-item--hidden")) {
       a += 1;
     }
@@ -41,7 +41,7 @@ function adjustMenu() {
   }, 0);
   // console.log(listedTabs.length, state.filteredOutTabs);
   // if there are no listed tabs (such as when they are all filtered out), disable all buttons
-  if (visibleTabs < 1) {
+  if (numOfVisibleTabs < 1) {
     menuButtons.forEach(btn => {
       disableButton(btn);
     });

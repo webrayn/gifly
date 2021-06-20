@@ -49,7 +49,7 @@ function style() {
     .pipe(browserSync.stream());
 }
 
-// handle js
+// handle popup-related js
 function scripts() {
   return gulp
     .src("./src/scripts/*.js")
@@ -61,9 +61,20 @@ function scripts() {
     .pipe(gulp.dest("./dist/js"));
 }
 
+// handle background service worker
+function workers() {
+  return gulp
+    .src("./src/service_workers/*.js")
+    .on("error", swallowError)
+    .pipe(gulp.dest("./dist"));
+}
+
 // move manifest.json to dist directory
 function manifest() {
-  return gulp.src("./src/manifest.json").pipe(gulp.dest("./dist"));
+  return gulp
+    .src("./src/manifest.json")
+    .on("error", swallowError)
+    .pipe(gulp.dest("./dist"));
 }
 
 // optimize images
@@ -80,6 +91,7 @@ function watchFiles() {
   gulp.watch("./src/*.html", gulp.series(html, reload));
   gulp.watch("./src/styles/**/*.scss", style);
   gulp.watch("./src/scripts/**/*.js", gulp.series(scripts, reload));
+  gulp.watch("./src/service_workers/*.js", gulp.series(workers, reload));
   gulp.watch("./src/manifest.json", gulp.series(manifest, reload));
   gulp.watch("./src/images/**/*", gulp.series(images, reload));
 }
@@ -92,7 +104,7 @@ function swallowError(err) {
 const watch = gulp.parallel(watchFiles, browserSyncInit);
 const build = gulp.series(
   clean,
-  gulp.parallel(html, style, scripts, manifest, images)
+  gulp.parallel(html, style, scripts, workers, manifest, images)
 );
 
 exports.watch = watch;

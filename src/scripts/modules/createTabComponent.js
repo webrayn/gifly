@@ -1,5 +1,7 @@
 "use strict";
 
+const createCheckboxIcon = require("./util").createCheckboxIcon;
+
 function createTabComponent(tab) {
   const tabComponent = document.createElement("li");
   tabComponent.id = `tab-${tab.id}`;
@@ -26,7 +28,16 @@ function createTabComponent(tab) {
   // create checkbox
   const checkbox = document.createElement("input");
   checkbox.setAttribute("type", "checkbox");
+  checkbox.id = `checkbox-${tab.id}`;
   checkbox.classList.add("tab-list-item__checkbox");
+
+  // create checkbox label
+  const label = document.createElement("label");
+  label.classList.add("tab-list-item__checkbox-label");
+  label.for = checkbox.id;
+  const checkboxIcon = createCheckboxIcon();
+  label.append(checkbox);
+  label.append(checkboxIcon);
 
   // create favIcon
   const favIcon = document.createElement("img");
@@ -61,7 +72,7 @@ function createTabComponent(tab) {
   tabButton.classList.add("tab-list-item__tab-button");
 
   tabComponent.appendChild(tabButton);
-  tabComponent.appendChild(checkbox);
+  tabComponent.appendChild(label);
   tabComponent.appendChild(favIcon);
   tabComponent.appendChild(p);
   tabComponent.appendChild(activeIndicator);

@@ -109,11 +109,66 @@ function dragTab(options = {}) {
   }
 }
 
+function createCheckboxIcon() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  let paths = null;
+
+  // set standard svg attributes
+  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svg.setAttribute("version", "1.1");
+  svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+  svg.setAttribute("xmlns:svgjs", "http://svgjs.com/svgjs");
+  svg.setAttribute("viewbox", "0 0 20 20");
+  svg.setAttribute("width", "20");
+  svg.setAttribute("height", "20");
+  g.setAttribute(
+    "transform",
+    "matrix(0.8333333333333334,0,0,0.8333333333333334,0,0)"
+  );
+
+  const createPaths = num => {
+    const paths = [];
+    for (let i = 0; i < num; i++) {
+      paths[i] = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      paths[i].setAttribute("fill", "none");
+      paths[i].setAttribute("stroke", "var(--color-two)");
+      paths[i].setAttribute("stroke-linecap", "round");
+      paths[i].setAttribute("stroke-linejoin", "round");
+      paths[i].setAttribute("stroke-width", "1.5");
+    }
+    return paths;
+  };
+
+  paths = createPaths(2);
+  // paths[0].setAttribute(
+  //   "d",
+  //   "M6,13.223L8.45,16.7C8.645,16.991 8.972,17.165 9.322,17.165C9.649,17.165 9.959,17.012 10.157,16.751L18,6.828"
+  // );
+  // paths[1].setAttribute(
+  //   "d",
+  //   "M0.75,3.071C0.75,2.455 0.995,1.865 1.43,1.429C1.866,0.994 2.456,0.749 3.072,0.749L20.928,0.749C21.544,0.749 22.134,0.994 22.57,1.429C23.005,1.865 23.25,2.455 23.25,3.071L23.25,20.927C23.25,21.543 23.005,22.133 22.57,22.569C22.134,23.004 21.544,23.249 20.928,23.249L3.072,23.249C2.456,23.249 1.866,23.004 1.43,22.569C0.995,22.133 0.75,21.543 0.75,20.927L0.75,3.071Z"
+  // );
+  paths[0].setAttribute(
+    "d",
+    "M6,13.223L8.45,16.7C8.645,16.991 8.972,17.165 9.322,17.165C9.649,17.165 9.959,17.012 10.157,16.751L18,6.828"
+  );
+  paths[1].setAttribute(
+    "d",
+    "M0.75,3.412C0.75,1.941 1.942,0.749 3.413,0.749L20.587,0.749C22.058,0.749 23.25,1.941 23.25,3.412L23.25,20.586C23.25,22.057 22.058,23.249 20.587,23.249L3.413,23.249C1.942,23.249 0.75,22.057 0.75,20.586L0.75,3.412Z"
+  );
+
+  paths.forEach(path => g.appendChild(path));
+  svg.appendChild(g);
+  return svg;
+}
+
 module.exports = {
   adjustBodyPadding,
   getNewDuplicateColor,
   getListedTabs,
   adjustScrollbar,
+  createCheckboxIcon,
   calculateScrollbarHeight,
   scroll,
   dragTab

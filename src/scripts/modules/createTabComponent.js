@@ -1,6 +1,6 @@
 "use strict";
 
-const createCheckboxIcon = require("./util").createCheckboxIcon;
+const createCheckboxSvg = require("./util").createCheckboxSvg;
 
 function createTabComponent(tab) {
   const tabComponent = document.createElement("li");
@@ -35,7 +35,9 @@ function createTabComponent(tab) {
   const label = document.createElement("label");
   label.classList.add("tab-list-item__checkbox-label");
   label.for = checkbox.id;
-  const checkboxIcon = createCheckboxIcon();
+  // label.tabIndex = 0;
+  const checkboxIcon = createCheckboxSvg();
+  checkboxIcon.classList.add(`tab-list-item__svg-checkbox`);
   label.append(checkbox);
   label.append(checkboxIcon);
 

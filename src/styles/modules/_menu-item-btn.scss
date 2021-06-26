@@ -11,13 +11,15 @@
   text-indent: var(--block-height);
   white-space: nowrap;
   margin-left: var(--lesser-padding);
-  transition: background-color 60ms ease-out;
+  transition: background-color 100ms ease-in-out, box-shadow 100ms ease-in-out;
 
   &:hover {
-    // background: radial-gradient(circle at center, var(--color-one) 0, var(--color-two) 100%);
-    // background: linear-gradient(90deg, var(--color-two-hover), var(--color-two), var(--color-two-hover));
     background: var(--color-two-hover);
-    // box-shadow: inset 0 0 0 1px var(--color-two);
+    transition: background-color 100ms ease-in-out, box-shadow 100ms ease-in-out;
+  }
+
+  &:focus {
+    transition: background-color 100ms ease-in-out, box-shadow 100ms ease-in-out;
   }
 
   &:active {

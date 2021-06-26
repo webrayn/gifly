@@ -12,7 +12,13 @@
   "action": {
     "default_icon": "images/tabble16.png",
     "default_popup": "index.html",
-    "default_title": "ninja popup"
+    "default_title": "ninja"
+  },
+  "icons": {
+    "16": "/images/ninja16.png",
+    "32": "/images/ninja32.png",
+    "48": "/images/ninja48.png",
+    "128": "/images/ninja128.png"
   },
   "manifest_version": 3
 }

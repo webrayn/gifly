@@ -138,23 +138,6 @@ document.addEventListener("click", e => {
       chrome.tabs.highlight({ tabs: tab.index }, function () { });
     });
     // chrome.browserAction.openPopup()
-  } else if (e.target.classList.contains("tab-list-item__checkbox")) {
-    if (e.target.checked) {
-      const moveDownButton = document.getElementById("move-to-bottom");
-      moveDownButton.removeAttribute("disabled");
-      moveDownButton.classList.remove("header__menu-item-button--disabled");
-      state.selectedTabs = [...state.selectedTabs, e.target.parentElement];
-    } else {
-      state.selectedTabs = state.selectedTabs.filter(
-        t => t.id != e.target.parentElement.id
-      );
-      if (state.selectedTabs.length < 1) {
-        // console.log("less than 1");
-        const moveDownButton = document.getElementById("move-to-bottom");
-        moveDownButton.setAttribute("disabled", true);
-        moveDownButton.classList.add("header__menu-item-button--disabled");
-      }
-    }
   } else if (e.target.id == "move-to-bottom") {
     const tabs = [...document.getElementsByClassName("tab-list-item")];
     const selectedTabs = tabs.filter(t => t.children[1].checked);
@@ -167,6 +150,30 @@ document.addEventListener("click", e => {
       filter.call(state);
       filterInput.classList.remove("filter__input--cleared");
     }, 140);
+  }
+});
+
+document.addEventListener(`input`, e => {
+  if (e.target.classList.contains("tab-list-item__checkbox")) {
+    const label = e.target.parentElement;
+    if (e.target.checked) {
+      label.classList.add(`tab-list-item__checkbox-label--checked`);
+      const moveDownButton = document.getElementById("move-to-bottom-btn");
+      moveDownButton.removeAttribute("disabled");
+      moveDownButton.classList.remove("header__menu-item-button--disabled");
+      state.selectedTabs = [...state.selectedTabs, e.target.parentElement];
+    } else {
+      label.classList.remove(`tab-list-item__checkbox-label--checked`);
+      state.selectedTabs = state.selectedTabs.filter(
+        t => t.id != e.target.parentElement.id
+      );
+      if (state.selectedTabs.length < 1) {
+        // console.log("less than 1");
+        const moveDownButton = document.getElementById("move-to-bottom-btn");
+        moveDownButton.setAttribute("disabled", true);
+        moveDownButton.classList.add("header__menu-item-button--disabled");
+      }
+    }
   }
 });
 

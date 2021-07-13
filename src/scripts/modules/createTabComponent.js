@@ -1,6 +1,8 @@
 "use strict";
 
 const createCheckboxSvg = require("./util").createCheckboxSvg;
+const createDuplicateIndicatorSvg = require("./util")
+  .createDuplicateIndicatorSvg;
 
 function createTabComponent(tab) {
   const tabComponent = document.createElement("li");
@@ -22,8 +24,7 @@ function createTabComponent(tab) {
   activeIndicator.classList.add("tab-list-item__active-indicator");
 
   // create duplicate indicator
-  const duplicateIndicator = document.createElement("div");
-  duplicateIndicator.classList.add("tab-list-item__duplicate-indicator");
+  const duplicateIndicator = createDuplicateIndicatorSvg();
 
   // create checkbox
   const checkbox = document.createElement("input");

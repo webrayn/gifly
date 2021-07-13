@@ -172,24 +172,12 @@
       box-shadow: inset 0 0 0 2px lime;
     }
 
-    // & + svg .tab-list-item__svg-checkbox-box {
-    //   // fill: var(--color-two);
-    //   transition: fill 1000ms ease-in-out;
-    // }
-
-    // & + svg .tab-list-item__svg-checkbox-checkmark {
-    //   // stroke: var(--color-three);
-    //   transition: stroke 1000ms ease-in-out;
-    // }
-
     &:checked + svg .tab-list-item__svg-checkbox-box {
       fill: var(--color-two);
-      // transition: fill 1000ms ease-in-out;
     }
 
     &:checked + svg .tab-list-item__svg-checkbox-checkmark {
       stroke: var(--color-three);
-      // transition: stroke 1000ms ease-in-out;
     }
   }
 
@@ -199,15 +187,16 @@
     border-radius: var(--lesser-padding);
     top: -0.2rem;
     left: -0.2rem;
+    transition: box-shadow 100ms ease-in-out;
 
     &-box {
       fill: transparent;
-      transition: fill 100ms ease-in-out;
+      transition: fill 80ms ease-in-out;
     }
 
     &-checkmark {
       stroke: transparent;
-      transition: stroke 100ms ease-in-out;
+      transition: stroke 80ms ease-in-out;
     }
   }
 
@@ -331,27 +320,12 @@
     z-index: -1000;
   }
 
+  &__duplicate-indicator {
+    margin-right: var(--greater-padding);
+  }
+
   &--duplicate {
-
-    & .tab-list-item__duplicate-indicator {
-      position: relative;
-      margin-right: var(--greater-padding);
-      width: 0.35rem;
-      height: 0.35rem;
-      border-radius: 0.1rem;
-      background: var(--duplicate-indicator-color);
-
-      &::after {
-        content: "";
-        position: absolute;
-        top: 0.65rem;
-        left: 0;
-        width: 0.35rem;
-        height: 0.35rem;
-        border-radius: 0.1rem;
-        background: var(--duplicate-indicator-color);
-      }
-    }
+    stroke: var(--color-two);
   }
 
   &--deleted {

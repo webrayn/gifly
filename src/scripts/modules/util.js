@@ -155,12 +155,57 @@ function createCheckboxSvg() {
   return svg;
 }
 
+function createDuplicateIndicatorSvg() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.classList.add(`tab-list-item__duplicate-indicator`);
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  let paths = null;
+
+  // set standard svg attributes
+  svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  svg.setAttribute("version", "1.1");
+  svg.setAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
+  svg.setAttribute("xmlns:svgjs", "http://svgjs.com/svgjs");
+  svg.setAttribute("viewbox", "0 0 20 20");
+  svg.setAttribute("width", "20");
+  svg.setAttribute("height", "20");
+  g.setAttribute("transform", "matrix(0.833333,0,0,0.833333,0,0)");
+
+  const createPaths = num => {
+    const paths = [];
+    for (let i = 0; i < num; i++) {
+      paths[i] = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      paths[i].setAttribute("fill", "none");
+      paths[i].setAttribute("stroke-linecap", "round");
+      paths[i].setAttribute("stroke-linejoin", "round");
+      paths[i].setAttribute("stroke-width", "1.5");
+    }
+    return paths;
+  };
+
+  paths = createPaths(2);
+  paths[0].setAttribute(
+    "d",
+    "M3.75,2.507C3.75,1.534 4.538,0.746 5.511,0.746L21.489,0.746C22.462,0.746 23.25,1.534 23.25,2.507C23.25,6.213 23.25,14.779 23.25,18.485C23.25,19.458 22.462,20.246 21.489,20.246C17.614,20.246 8.423,20.246 5.034,20.246C4.325,20.246 3.75,19.671 3.75,18.962L3.75,2.507Z"
+  );
+
+  paths[1].setAttribute(
+    "d",
+    "M20.25,23.246C20.25,23.246 10.416,23.238 4.71,23.233C2.515,23.231 0.737,21.45 0.739,19.255C0.743,13.558 0.75,3.746 0.75,3.746"
+  );
+
+  g.append(...paths);
+  svg.appendChild(g);
+  return svg;
+}
+
 module.exports = {
   adjustBodyPadding,
   getNewDuplicateColor,
   getListedTabs,
   adjustScrollbar,
   createCheckboxSvg,
+  createDuplicateIndicatorSvg,
   calculateScrollbarHeight,
   scroll,
   dragTab
